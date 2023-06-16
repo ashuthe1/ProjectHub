@@ -15,7 +15,7 @@ As a community, we always encourage people to share their thoughts and ideas. Do
 ## Tech stack
 
 1. Frontend - **React**
-2. CSS Framework - **Tailwind CSS**
+2. CSS Framework - **Bootstrap**
 3. Backend - **Nodejs, Express & MongoDB**
 
 ## Installation steps
