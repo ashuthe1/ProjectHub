@@ -83,12 +83,14 @@ p.danger {
 }
 /************ Navbar Css ************/
 nav.navbar {
-  padding: 18px 0;
+  padding: 0 0;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 9999;
   transition:  0.32s ease-in-out;
+  /* border: 2px solid red; */
+  background-color: rgba(0, 0, 0, 0.3);
 }
 nav.navbar.scrolled {
   padding: 0px 0;
@@ -98,7 +100,7 @@ nav.navbar a.navbar-brand {
     width: 9%;
 }
 nav.navbar .navbar-nav .nav-link.navbar-link {
-  font-weight: 400;
+  font-weight: 450;
   color: #fff !important;
   letter-spacing: 0.8px;
   padding: 0 25px;
@@ -108,6 +110,7 @@ nav.navbar .navbar-nav .nav-link.navbar-link {
 nav.navbar .navbar-nav a.nav-link.navbar-link:hover,
 nav.navbar .navbar-nav a.nav-link.navbar-link.active {
     opacity: 1;
+    /* filter: blur(10); */
 }
 span.navbar-text {
     display: flex;
@@ -123,7 +126,7 @@ span.navbar-text {
     background: rgba(217, 217, 217, 0.1);
     display: inline-flex;
     border-radius: 50%;
-    margin-right: 6px;
+    margin-right: 15px;
     align-items: center;
     justify-content: center;
     line-height: 1;
@@ -186,7 +189,7 @@ span.navbar-text {
 }
 nav.navbar .navbar-toggler:active,
 nav.navbar .navbar-toggler:focus {
-	outline: none;
+	  outline: none;
     box-shadow: none;
 }
 nav.navbar .navbar-toggler-icon {
@@ -230,6 +233,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 	border-color: transparent;
 }
 
+button.vvd{
+  /* border: 2px solid red; */
+  margin-left: 3em;
+}
+
 /************ Banner Css ************/
 .banner {
   margin-top: 0;
@@ -240,12 +248,14 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   background-repeat: no-repeat;
 }
 .banner .tagline {
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  padding: 8px 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  /* padding: 8px 10px; */
+  padding: 0.5em 0.6em;
   background: linear-gradient(90.21deg, rgba(170, 54, 124, 0.5) -5.91%, rgba(74, 47, 189, 0.5) 111.58%);
   border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: 0.6 rem;
   margin-bottom: 16px;
   display: inline-block;
 }
@@ -284,6 +294,9 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 .banner img {
   animation: updown 3s linear infinite;
+  margin-top: 2em;
+  /* border: 2px solid red; */
+  height: 20em;
 }
 @keyframes updown {
     0% {
@@ -304,6 +317,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .skill {
   padding: 0 0 50px 0;
   position: relative;
+  /* border: 2px solid green ; */
 }
 .skill-bx {
   background: #151515;
