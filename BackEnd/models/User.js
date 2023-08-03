@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
         ref: "Project",
     },
     friends:{
-        type: mongoose.Mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Mongoose.Schema.Types.ObjectId],
         ref: "User",
     }, 
     profilePicUrl:{
