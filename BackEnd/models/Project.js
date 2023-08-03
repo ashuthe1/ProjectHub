@@ -41,6 +41,10 @@ const projectSchema = new mongoose.Schema({
         type: [mongoose.Mongoose.Schema.Types.ObjectId],
         ref: "Comment",
     },
+    publishedDate:{
+        type: Date,
+        default: Date.now,
+    },
 });
 
 const Project = mongoose.model("Project", projectSchema);
