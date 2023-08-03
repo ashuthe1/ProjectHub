@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const app = express();
-const PORT = process.env.PORT || 4000;
 app.use(express.json());
 
-mongoose.connect(process.env.DATABASE_URL, {
+const MONGO_URL = process.env.MONGO_URL || "mongodb://0.0.0.0:27017/projectHub";
+const PORT = process.env.PORT || 8080;
+mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
