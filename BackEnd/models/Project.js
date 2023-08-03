@@ -5,10 +5,24 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    description:{
+    shortDescription:{
+        type: String,
+        required: true,
+    },
+    longDescription:{
         type: String,
     },
+    techStack:{
+        type: [String],
+    },
     thumbnailImage:{
+        type: String,
+    },
+    gitHubLink:{
+        type: String,
+        required: true,
+    },
+    liveLink:{
         type: String,
     },
     rating:{
@@ -26,6 +40,10 @@ const projectSchema = new mongoose.Schema({
     comments:{
         type: [mongoose.Mongoose.Schema.Types.ObjectId],
         ref: "Comment",
+    },
+    publishedDate:{
+        type: Date,
+        default: Date.now,
     },
 });
 
