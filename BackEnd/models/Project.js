@@ -5,6 +5,10 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    projectOwnerUserName:{
+        type: String,
+        required: true,
+    },
     shortDescription:{
         type: String,
         required: true,
@@ -37,10 +41,10 @@ const projectSchema = new mongoose.Schema({
         type: Number,
         default : 0,
     },
-    comments:{
-        type: [mongoose.Mongoose.Schema.Types.ObjectId],
+    comments:[{
+        type: mongoose.Mongoose.Schema.Types.ObjectId,
         ref: "Comment",
-    },
+    }],
     publishedDate:{
         type: Date,
         default: Date.now,
