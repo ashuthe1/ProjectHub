@@ -5,7 +5,12 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    projectOwnerUserName:{
+    projectId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    userNameOfCreator:{
         type: String,
         required: true,
     },
@@ -19,7 +24,7 @@ const projectSchema = new mongoose.Schema({
     techStack:{
         type: [String],
     },
-    thumbnailImage:{
+    thumbnailImageUrl:{
         type: String,
     },
     gitHubLink:{
@@ -42,7 +47,7 @@ const projectSchema = new mongoose.Schema({
         default : 0,
     },
     comments:[{
-        type: mongoose.Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
     }],
     publishedDate:{
@@ -52,4 +57,4 @@ const projectSchema = new mongoose.Schema({
 });
 
 const Project = mongoose.model("Project", projectSchema);
-module.exports = { Project };
+module.exports = Project;
