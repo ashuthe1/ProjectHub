@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const MONGO_URL = process.env.MONGO_URL || "mongodb://0.0.0.0:27017/projectHub";
 
-const connectDB = async (MONGO_URL) => {
+const connectDB = async () => {
   try {
     mongoose.connect(MONGO_URL, {
         useNewUrlParser: true,

@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     projects:[{
-        type: mongoose.Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Project",
     }],
     friends:[{
-        type: mongoose.Mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     }], 
     profilePicUrl:{
@@ -40,6 +40,5 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-const User = mongoose.model("User", userSchema);
-
-module.exports = { User };
+const User = mongoose.model('User', userSchema)
+module.exports = User;
