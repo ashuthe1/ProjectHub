@@ -1,10 +1,10 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const SECRET_ACCESS_TOKEN = process.env.SECRET_ACCESS_TOKEN || 'OURHARDCODEDSECRET';
-const loginController = async (req, res) => {
-  const { email, password } = req.body;
+const User = require("../models/User.js");
+const bcrypt = require("bcrypt");
+const { generateToken } = require("../utils/generateToken");
 
+const loginController = async (req, res) => {
+  console.log(req.body);
+  const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(401).send({
@@ -21,18 +21,19 @@ const loginController = async (req, res) => {
   }
 
   if (isMatch) {
-    const accessToken = jwt.sign({ id: user._id, email: user.email, userName: user.userName }, SECRET_ACCESS_TOKEN);
+    const accessToken = generateToken(user.userName);
     res.status(200)
       .json({
+        success: true,
+        message: "User logged in successfully",
         accessToken
       });
   }
 };
 
-
 const registerController = async (req, res) => {
   try {
-    const { name, email, userName, password } = req.body;
+    const { firstName, email, userName, password } = req.body;
 
     // Verifying email or userName is already registered or not
     const existingEmail = await User.findOne({ email });
@@ -60,7 +61,7 @@ const registerController = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, salt);
 
     const userData = {
-      name: name,
+      firstName: firstName,
       email: email,
       userName: userName,
       hashedPassword: hashedPassword,
@@ -72,6 +73,7 @@ const registerController = async (req, res) => {
       success: true,
       message: "User account created successfully",
     });
+
   } catch (err) {
     res.status(400).send({
       success: false,
