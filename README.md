@@ -35,7 +35,7 @@ As a community, we always encourage people to share their thoughts and ideas. Do
    ```
 3. Go into the project directory 🔽
    ```sh
-   cd projectmate
+   cd ProjectHub
    ```
 4. Install all the dependencies ✅
    ```sh

@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const SECRET_ACCESS_TOKEN = process.env.SECRET_ACCESS_TOKEN || 'OURHARDCODEDSECRET';
+const { generateToken } = require("../utils/generateToken");
+
 const loginController = async (req, res) => {
   const { email, password } = req.body;
 
@@ -21,14 +21,13 @@ const loginController = async (req, res) => {
   }
 
   if (isMatch) {
-    const accessToken = jwt.sign({ id: user._id, email: user.email, userName: user.userName }, SECRET_ACCESS_TOKEN);
+    const accessToken = generateToken(user.userName);
     res.status(200)
       .json({
         accessToken
       });
   }
 };
-
 
 const registerController = async (req, res) => {
   try {
