@@ -1,24 +1,24 @@
 const Project = require('../models/Project');
 const User = require('../models/User');
-const cloudinary = require('../utils/cloudinary');
+
+const cloudinary = require('../config/cloudinaryConfig');
+const upload = require('../middleware/imageUploadMiddleware')
 
 const createProject = async (req, res) => {
     try{
-        var newProject = { ...req.body};
-        // const thumbImg = await cloudinary.uploader.upload(newProject.thumbnailImage, {
-        //     folder: "ThumbnailImages",
-        // })
-        // newProject.thumbnailImageUrl = thumbImg.secure_url;
-        newProject.userNameOfCreator = req.params.userName;
-        newProject.projectId = newProject.title.replace(/\s+/g, '-').toLowerCase() + Date.now();
-        const project = new Project(newProject);
-        try {
-            await project.save();
-            res.status(201).json(project);
-        }
-        catch (err) {
-            res.status(409).json({ message: err.message });
-        }
+        console.log(req.body, req.params.userName);
+        res.status(201).json({ message: "Project created successfully" });
+        // var newProject = { ...req.body};
+        // const image = req.file;
+        // const result = await cloudinary.uploader.upload(image.path);
+        // newProject.thumbnailImageUrl = result.secure_url;
+        // console.log(newProject.thumbnailImageUrl);
+        // newProject.userNameOfCreator = req.params.userName;
+        // newProject.projectId = newProject.title.replace(/\s+/g, '-').toLowerCase() + Date.now();
+
+        // const project = new Project(newProject);
+        // await project.save();
+        // res.status(201).json(project);
     }
     catch(err){
         res.status(409).json({ message: err.message });
