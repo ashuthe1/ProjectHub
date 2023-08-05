@@ -5,11 +5,12 @@ const cloudinary = require('../utils/cloudinary');
 const createProject = async (req, res) => {
     try{
         var newProject = { ...req.body};
-        const thumbImg = await cloudinary.uploader.upload(newProject.thumbnailImage, {
-            folder: "ThumbnailImages",
-        })
-        newProject.thumbnailImageUrl = thumbImg.secure_url;
+        // const thumbImg = await cloudinary.uploader.upload(newProject.thumbnailImage, {
+        //     folder: "ThumbnailImages",
+        // })
+        // newProject.thumbnailImageUrl = thumbImg.secure_url;
         newProject.userNameOfCreator = req.params.userName;
+        newProject.projectId = newProject.title.replace(/\s+/g, '-').toLowerCase() + Date.now();
         const project = new Project(newProject);
         try {
             await project.save();
@@ -57,11 +58,10 @@ const getFeaturedProjects = async (req, res) => {
 const updateProject = async (req, res) => {
     try {
         const newProjectData = { ...req.body};
-        Project.updateOne({projectId: req.params.projectId}, newProjectData, function(err, result){
-            if(err) res.status(404).json({ message: err.message });
-            else{
-                res.status(200).json(result);
-            }
+        Project.updateOne({projectId: req.params.projectId}, newProjectData).then((result) =>{
+            res.status(200).json(result);
+        }).catch((err) =>{
+            res.status(404).json({ message: err.message });
         });
     }
     catch (err) {
