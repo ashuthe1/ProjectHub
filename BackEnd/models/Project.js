@@ -14,12 +14,14 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    shortDescription:{
-        type: String,
-        required: true,
-    },
-    longDescription:{
-        type: String,
+    description:{
+        shortDescription:{
+            type: String,
+            required: true,
+        },
+        longDescription:{
+            type: String,
+        },
     },
     techStack:{
         type: [String],
@@ -27,12 +29,14 @@ const projectSchema = new mongoose.Schema({
     thumbnailImageUrl:{
         type: String,
     },
-    gitHubLink:{
-        type: String,
-        required: true,
-    },
-    liveLink:{
-        type: String,
+    links:{
+        gitHubLink:{
+            type: String,
+            required: true,
+        },
+        liveLink:{
+            type: String,
+        },
     },
     rating:{
         type: Number,

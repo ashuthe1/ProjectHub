@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-    },
-    lastName:{
-        type: String,
+    name: {
+        firstName: {
+            type: String,
+            required: true,
+        },
+        lastName:{
+            type: String,
+        }
     },
     userName:{
         type: String,
@@ -18,6 +20,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    comments:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+    }],
     projects:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Project",
