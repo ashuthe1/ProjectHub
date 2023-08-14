@@ -33,7 +33,7 @@ const loginController = async (req, res) => {
 
 const registerController = async (req, res) => {
   try {
-    const { firstName, email, userName, password } = req.body;
+    const { firstName, lastName, email, userName, password } = req.body;
 
     // Verifying email or userName is already registered or not
     const existingEmail = await User.findOne({ email });
@@ -61,11 +61,14 @@ const registerController = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, salt);
 
     const userData = {
-      firstName: firstName,
+      name :{
+        firstName: firstName,
+      },
       email: email,
       userName: userName,
       hashedPassword: hashedPassword,
     };
+    if(lastName) userData.name.lastName = lastName;
 
     console.log(userData);
     await User.create(userData);
