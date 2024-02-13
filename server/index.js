@@ -3,7 +3,7 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const redisClient = require("./config/redis");
 
 const corsOptions = require("./config/corsOptions");
 const errorHandler = require("./middleware/errorHandler");

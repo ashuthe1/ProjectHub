@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
+const {redisClient, DEFAULT_EXPIRATION} = require("../config/redis");
 
 const getAllProjects = async (req, res, next) => {
   try {
@@ -15,9 +16,35 @@ const getAllProjects = async (req, res, next) => {
 
 const getFeaturedProjects = async (req, res, next) => {
   try {
-    const projects = await Project.find({ isFeatured: true })
-      .sort({ createdAt: -1 }).limit(6);
-    res.status(200).send(projects);
+    redisClient.set("Ashutosh", "Gautam");
+    redisClient.expire("Ashutosh", DEFAULT_EXPIRATION);
+    redisClient.get("Ashutosh", (error, value) => {
+      if (error) {
+        console.log("Got error while fetching Ashutosh from Redis");
+        throw error;
+      }
+      if(value) {
+        console.log(value);
+        console.log("Cache hit: Fetched Ashutosh from Redis.");
+      }
+      else console.log("Cache miss: Fetched Ashutosh from Redis.");
+    }
+    );
+    redisClient.get("featuredProjects", async (error, featuredProjects) => {
+      if (error) {
+        console.log("Got error while fetching featured projects from Redis");
+        throw error;
+      }
+      if (featuredProjects != null) {
+        console.log("Cache hit: Fetched featured projects from Redis.");
+        return res.status(200).send(JSON.parse(featuredProjects));
+      }
+    });
+    console.log("Cache miss: Fetched featured projects from MongoDB.");
+    const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
+    redisClient.set("featuredProjects", JSON.stringify(featuredProjects));
+    redisClient.expire("featuredProjects", DEFAULT_EXPIRATION);
+    res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);
   }
