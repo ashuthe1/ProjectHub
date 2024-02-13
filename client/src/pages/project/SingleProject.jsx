@@ -270,7 +270,7 @@ const SingleProject = () => {
             </div>
             {/* Project details */}
             <div className="basis-2/3 flex flex-col gap-4">
-              <h3 className="font-bold text-2xl">Long Description</h3>
+              <h3 className="font-bold text-2xl">Key Features</h3>
               <ul className="ml-2 flex flex-col gap-4">
                 {data?.longDescription?.map((longDescription, i) => (
                     <li key={`longDescription-${i + 1}`}>
