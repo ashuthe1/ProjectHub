@@ -1,7 +1,16 @@
 const jwt = require("jsonwebtoken");
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
-const {redisClient, DEFAULT_EXPIRATION} = require("../config/redis");
+const { createClient } = require("redis");
+const redisClient = createClient();
+const DEFAULT_EXPIRATION = 3600; // 1 hour
+
+async function connect() {
+  if (!redisClient.isOpen) {
+      await redisClient.connect()
+      console.log('Connected to Redis')
+  }
+}
 
 const getAllProjects = async (req, res, next) => {
   try {
@@ -16,26 +25,13 @@ const getAllProjects = async (req, res, next) => {
 
 const getFeaturedProjects = async (req, res, next) => {
   try {
-    redisClient.set("Ashutosh", "Gautam");
-    redisClient.expire("Ashutosh", DEFAULT_EXPIRATION);
-    redisClient.get("Ashutosh", (error, value) => {
-      if (error) {
-        console.log("Got error while fetching Ashutosh from Redis");
-        throw error;
-      }
-      if(value) {
-        console.log(value);
-        console.log("Cache hit: Fetched Ashutosh from Redis.");
-      }
-      else console.log("Cache miss: Fetched Ashutosh from Redis.");
-    }
-    );
+    await connect();
     redisClient.get("featuredProjects", async (error, featuredProjects) => {
       if (error) {
         console.log("Got error while fetching featured projects from Redis");
         throw error;
       }
-      if (featuredProjects != null) {
+      if (featuredProjects) {
         console.log("Cache hit: Fetched featured projects from Redis.");
         return res.status(200).send(JSON.parse(featuredProjects));
       }

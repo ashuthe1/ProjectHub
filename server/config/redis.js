@@ -1,10 +1,13 @@
-const Redis = require("redis");
-const redisClient = Redis.createClient();
-const DEFAULT_EXPIRATION = 3600; // 1 hour
+const { createClient } = require("redis");
 
-const connectClient = async() => {
-    await redisClient.connect();
-};
-connectClient();
+const redisClient = createClient();
 
-module.exports = {redisClient, DEFAULT_EXPIRATION};
+async function connect() {
+    if (!redisClient.isOpen) {
+        await redisClient.connect()
+        console.log('Connected to Redis')
+    }
+}
+connect()
+
+module.exports = redisClient;
