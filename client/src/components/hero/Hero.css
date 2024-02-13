@@ -1,0 +1,12 @@
+.heroBg{
+    /* border: 2px solid red; */
+    margin-top: 2em;
+    /* margin-right: 10px; */
+    height: 100%;
+    width:65%;
+}
+
+.left{
+    /* border: 2px solid red; */
+    width: 50%;
+}
