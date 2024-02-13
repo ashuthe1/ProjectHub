@@ -10,8 +10,8 @@ export default {
       },
       backgroundImage: {
         login:
-          "url('https://res-console.cloudinary.com/djqpqsjtq/media_explorer_thumbnails/f0156bf52f432458eb1b1f850eca625d/detailed')",
-        hero: "url('https://res-console.cloudinary.com/djqpqsjtq/media_explorer_thumbnails/f0156bf52f432458eb1b1f850eca625d/detailed')",
+          "url('https://firebasestorage.googleapis.com/v0/b/bestfriends-7cfa8.appspot.com/o/ProjectHub%2Fheader-img.svg?alt=media&token=a6cff625-34fd-4c5b-bbc9-2a04ff3d40da')",
+        hero: "url('https://firebasestorage.googleapis.com/v0/b/bestfriends-7cfa8.appspot.com/o/ProjectHub%2Fheader-img.svg?alt=media&token=a6cff625-34fd-4c5b-bbc9-2a04ff3d40da')",
       },
     },
   },
