@@ -1,12 +1,12 @@
 import React from "react";
 import { Hero, HomeCategories, Subscribe } from "../../components";
-import { useGetProjectsQuery } from "../../features/project/projectApiSlice";
+import { useGetProjectsQuery, useGetFeaturedProjectsQuery } from "../../features/project/projectApiSlice";
 import { useGetBlogsQuery } from "../../features/blog/blogApiSlice";
 import useAuth from "../../hooks/useAuth";
 
 const Home = () => {
   const user = useAuth();
-  const projects = useGetProjectsQuery();
+  const projects = useGetFeaturedProjectsQuery();
   const blogs = useGetBlogsQuery();
 
   return (

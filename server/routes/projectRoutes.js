@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getAllProjects,
+  getFeaturedProjects,
   getProject,
   addProject,
   updateProject,
@@ -23,6 +24,8 @@ router
     [verifyJwt, verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.Admin, ROLES_LIST.ProUser)],
     addProject
   );
+
+router.route("/featured").get(getFeaturedProjects);
 
 router
   .route("/rate/:id")

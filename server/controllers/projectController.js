@@ -13,6 +13,16 @@ const getAllProjects = async (req, res, next) => {
   }
 };
 
+const getFeaturedProjects = async (req, res, next) => {
+  try {
+    const projects = await Project.find({ isFeatured: true })
+      .sort({ createdAt: -1 }).limit(6);
+    res.status(200).send(projects);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getProject = async (req, res, next) => {
   try {
     const project = await Project.findOne({ _id: req.params.id })
@@ -107,7 +117,13 @@ const rateProject = async (req, res, next) => {
         .json({ error: "User has already rated this project" });
     }
 
-    // Add the new rating
+    const currentSumOfRatings = project.ratingDetails.sumOfRatings + rating;
+    const currentTotalRatings = project.ratingDetails.totalRatings + 1;
+    project.ratingDetails.sumOfRatings = currentSumOfRatings;
+    project.ratingDetails.totalRatings = currentTotalRatings;
+    if(currentTotalRatings >= 1 && currentSumOfRatings >= 4) {
+      project.isFeatured = true;
+    }
     project.ratings.push({ user: req.user, rating: rating });
     await project.save();
 
@@ -218,6 +234,7 @@ const toggleFavoriteProject = async (req, res, next) => {
 
 module.exports = {
   getAllProjects,
+  getFeaturedProjects,
   getProject,
   addProject,
   updateProject,

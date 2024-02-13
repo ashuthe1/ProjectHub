@@ -10,6 +10,10 @@ export const projectApiSlice = apiSlice.injectEndpoints({
       query: () => "/project",
       providesTags: ["projects"],
     }),
+    getFeaturedProjects: builder.query({
+      query: () => "/project/featured",
+      providesTags: ["projects"],
+    }),
     addProject: builder.mutation({
       query: (projectData) => ({
         url: "/project",
@@ -83,6 +87,7 @@ export const projectApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetProjectQuery,
   useGetProjectsQuery,
+  useGetFeaturedProjectsQuery,
   useAddProjectMutation,
   useUpdateProjectMutation,
   useRateProjectMutation,
