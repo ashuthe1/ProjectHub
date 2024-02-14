@@ -1,5 +1,6 @@
 const {Redis} = require('ioredis');
 
-const clientRedis = new Redis();
+const REDIS_URL = process.env.REDIS_URL || "redis://default:6379";
+const redisClient = new Redis(REDIS_URL);
 
-module.exports = clientRedis;
+module.exports = redisClient;
