@@ -16,14 +16,14 @@ const getAllProjects = async (req, res, next) => {
 
 const getFeaturedProjects = async (req, res, next) => {
   try {
-    const isCached = await redisClient.get("featuredProjects");
-    if(isCached) {
-      console.log("Cache Hit! Returning cached data.");
-      return res.status(200).send(JSON.parse(isCached));
-    }
+    // const isCached = await redisClient.get("featuredProjects");
+    // if(isCached) {
+    //   console.log("Cache Hit! Returning cached data.");
+    //   return res.status(200).send(JSON.parse(isCached));
+    // }
     console.log("Cache Miss! Fetching data from database.");
     const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
-    await redisClient.set("featuredProjects", JSON.stringify(featuredProjects), "EX", 60 * 60);
+    // await redisClient.set("featuredProjects", JSON.stringify(featuredProjects), "EX", 60 * 60);
     res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);
