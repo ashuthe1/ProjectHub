@@ -2,12 +2,16 @@ const jwt = require("jsonwebtoken");
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
 const redisClient = require("../config/redisClient");
+const generateRedisKey = require("../utils/generateRedisKey");
 
 const getAllProjects = async (req, res, next) => {
   try {
     const projects = await Project.find()
       .sort({ createdAt: -1 })
       .populate("author", "name");
+
+    const key = await generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(projects), "EX", 60 * 60);
     res.status(200).send(projects);
   } catch (error) {
     next(error);
@@ -16,14 +20,9 @@ const getAllProjects = async (req, res, next) => {
 
 const getFeaturedProjects = async (req, res, next) => {
   try {
-    const isCached = await redisClient.get("featuredProjects");
-    if(isCached) {
-      console.log("Cache Hit! Returning cached data.");
-      return res.status(200).send(JSON.parse(isCached));
-    }
-    console.log("Cache Miss! Fetching data from database.");
     const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
-    await redisClient.set("featuredProjects", JSON.stringify(featuredProjects), "EX", 60 * 60);
+    const key = await generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(featuredProjects), "EX", 60 * 60);
     res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);
@@ -35,6 +34,10 @@ const getProject = async (req, res, next) => {
     const project = await Project.findOne({ _id: req.params.id })
       .populate("author", "name")
       .populate("comments.user", ["name", "profilePicture"]);
+
+    const key = await generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(project), "EX", 60 * 60);
+
     res.status(200).send(project);
   } catch (error) {
     next(error);

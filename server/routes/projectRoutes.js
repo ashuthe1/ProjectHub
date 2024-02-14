@@ -14,18 +14,18 @@ const {
 const ROLES_LIST = require("../config/rolesList");
 const verifyJwt = require("../middleware/verifyJwt");
 const verifyRoles = require("../middleware/verifyRoles");
-
 const router = express.Router();
+const isCached = require("../middleware/isCached");
 
 router
   .route("/")
-  .get(getAllProjects)
+  .get(isCached, getAllProjects)
   .post(
     [verifyJwt, verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.Admin, ROLES_LIST.ProUser)],
     addProject
   );
 
-router.route("/featured").get(getFeaturedProjects);
+router.route("/featured").get(isCached, getFeaturedProjects);
 
 router
   .route("/rate/:id")
@@ -39,7 +39,7 @@ router
 
 router
   .route("/:id")
-  .get(getProject)
+  .get(isCached, getProject)
   .put(
     [verifyJwt, verifyRoles(ROLES_LIST.BasicUser, ROLES_LIST.Admin, ROLES_LIST.ProUser)],
     updateProject
