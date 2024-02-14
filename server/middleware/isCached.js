@@ -3,7 +3,7 @@ const generateRedisKey = require("../utils/generateRedisKey");
 
 const isCached = async (req, res, next) => {
     const key = await generateRedisKey(req.originalUrl);
-    console.log(`Checking cache for key: ${key}`);
+    console.log(`Checking cache for key: <${key}>`);
 
     const isCached = await redisClient.get(key);
     if (isCached) {

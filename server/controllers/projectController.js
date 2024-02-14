@@ -3,6 +3,7 @@ const Project = require("../models/projectModel");
 const User = require("../models/userModel");
 const redisClient = require("../config/redisClient");
 const generateRedisKey = require("../utils/generateRedisKey");
+const CACHE_TTL = 60 * 60;
 
 const getAllProjects = async (req, res, next) => {
   try {
@@ -10,8 +11,8 @@ const getAllProjects = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .populate("author", "name");
 
-    const key = await generateRedisKey(req.originalUrl);
-    await redisClient.set(key, JSON.stringify(projects), "EX", 60 * 60);
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(projects), "EX", CACHE_TTL);
     res.status(200).send(projects);
   } catch (error) {
     next(error);
@@ -21,8 +22,8 @@ const getAllProjects = async (req, res, next) => {
 const getFeaturedProjects = async (req, res, next) => {
   try {
     const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
-    const key = await generateRedisKey(req.originalUrl);
-    await redisClient.set(key, JSON.stringify(featuredProjects), "EX", 60 * 60);
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(featuredProjects), "EX", CACHE_TTL);
     res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);
@@ -35,8 +36,8 @@ const getProject = async (req, res, next) => {
       .populate("author", "name")
       .populate("comments.user", ["name", "profilePicture"]);
 
-    const key = await generateRedisKey(req.originalUrl);
-    await redisClient.set(key, JSON.stringify(project), "EX", 60 * 60);
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(project), "EX", CACHE_TTL);
 
     res.status(200).send(project);
   } catch (error) {
@@ -67,6 +68,10 @@ const addProject = async (req, res, next) => {
     }
     const project = Project({ ...req.body, author: req.user });
     await project.save();
+
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.del(key);
+
     res.status(201).json({ success: "Project added successfully" });
   } catch (error) {
     next(error);
@@ -102,6 +107,11 @@ const updateProject = async (req, res, next) => {
       },
       { new: true }
     );
+    
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.del(key);
+    await redisClient.set(key, JSON.stringify(project), "EX", CACHE_TTL);
+
     res.status(201).json(project);
   } catch (error) {
     next(error);
@@ -131,9 +141,14 @@ const rateProject = async (req, res, next) => {
     const currentTotalRatings = project.ratingDetails.totalRatings + 1;
     project.ratingDetails.sumOfRatings = currentSumOfRatings;
     project.ratingDetails.totalRatings = currentTotalRatings;
+
     if(currentTotalRatings >= 1 && currentSumOfRatings >= 4) {
       project.isFeatured = true;
+      const key = generateRedisKey("/projects/featured");
+      await redisClient.del(key);
+      await redisClient.set(key, JSON.stringify(project), "EX", CACHE_TTL);
     }
+
     project.ratings.push({ user: req.user, rating: rating });
     await project.save();
 
@@ -146,6 +161,13 @@ const rateProject = async (req, res, next) => {
 const deleteProject = async (req, res, next) => {
   try {
     const project = await Project.findOneAndDelete({ _id: req.params.id });
+
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.del(key);
+    await redisClient.del(generateRedisKey("/api/v1/project"));
+    if(project.isFeatured) 
+      await redisClient.del(generateRedisKey("/api/v1/project/featured"));
+
     res.sendStatus(204);
   } catch (error) {
     next(error);
@@ -169,6 +191,9 @@ const addComment = async (req, res, next) => {
     // Add the new comment
     project.comments.push({ user: req.user, comment });
     await project.save();
+
+    const key = generateRedisKey(`/api/v1/project/${req.params.id}`);
+    await redisClient.del(key);
 
     res.status(201).json({ message: "Comment added successfully." });
   } catch (error) {
@@ -194,6 +219,9 @@ const deleteComment = async (req, res, next) => {
 
     project.comments.splice(commentIndex, 1);
     await project.save();
+
+    const key = generateRedisKey(`/api/v1/project/${req.params.id}`);
+    await redisClient.del(key);
 
     res.status(200).json({ message: "Comment deleted successfully." });
   } catch (error) {
