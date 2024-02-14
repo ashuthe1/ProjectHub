@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
-const redisClient = require("../config/redisClient");
+// const redisClient = require("../config/redisClient");
 
 const getAllProjects = async (req, res, next) => {
   try {
