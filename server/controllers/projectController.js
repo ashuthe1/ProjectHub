@@ -1,39 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
-const { createClient } = require("redis");
-const redisClient = createClient();
-const DEFAULT_EXPIRATION = 3600; // 1 hour
-
-async function connect() {
-  if (!redisClient.isOpen) {
-      await redisClient.connect()
-      console.log('Connected to Redis')
-  }
-}
-
-async function fetchFromRedis() {
-  try {
-    await connect();
-    redisClient.get("featuredProjects", async (error, featuredProjects) => {
-      if (error) {
-        console.log("Got error while fetching featured projects from Redis");
-        throw error;
-      }
-      if (featuredProjects) {
-        console.log("Cache hit: Fetched featured projects from Redis.");
-        return res.status(200).send(JSON.parse(featuredProjects));
-      }
-    });
-    console.log("Cache miss: Fetched featured projects from MongoDB.");
-    const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
-    redisClient.set("featuredProjects", JSON.stringify(featuredProjects));
-    redisClient.expire("featuredProjects", DEFAULT_EXPIRATION);
-    res.status(200).send(featuredProjects);
-  } catch (error) {
-    next(error);
-  }
-}
 
 const getAllProjects = async (req, res, next) => {
   try {
