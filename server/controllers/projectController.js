@@ -12,18 +12,7 @@ async function connect() {
   }
 }
 
-const getAllProjects = async (req, res, next) => {
-  try {
-    const projects = await Project.find()
-      .sort({ createdAt: -1 })
-      .populate("author", "name");
-    res.status(200).send(projects);
-  } catch (error) {
-    next(error);
-  }
-};
-
-const getFeaturedProjects = async (req, res, next) => {
+async function fetchFromRedis() {
   try {
     await connect();
     redisClient.get("featuredProjects", async (error, featuredProjects) => {
@@ -40,6 +29,26 @@ const getFeaturedProjects = async (req, res, next) => {
     const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
     redisClient.set("featuredProjects", JSON.stringify(featuredProjects));
     redisClient.expire("featuredProjects", DEFAULT_EXPIRATION);
+    res.status(200).send(featuredProjects);
+  } catch (error) {
+    next(error);
+  }
+}
+
+const getAllProjects = async (req, res, next) => {
+  try {
+    const projects = await Project.find()
+      .sort({ createdAt: -1 })
+      .populate("author", "name");
+    res.status(200).send(projects);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getFeaturedProjects = async (req, res, next) => {
+  try {
+    const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
     res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);
