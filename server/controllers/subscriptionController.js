@@ -6,15 +6,12 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 
 const subscribe = async (req, res, next) => {
   try {
-    console.log("Inside subscribe")
 
     const customer = await stripe.customers.create({
       metadata: {
         userId: req.user,
       }
     });
-
-    console.log("Customer created")
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -29,8 +26,6 @@ const subscribe = async (req, res, next) => {
       success_url: `${process.env.CLIENT_BASE_URL}/payment-success`,
       cancel_url: `${process.env.CLIENT_BASE_URL}/payment-failed`,
     });
-
-    console.log("Session created")
 
     const foundUser = await User.findByIdAndUpdate(
       req.user,

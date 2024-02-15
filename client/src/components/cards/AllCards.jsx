@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { NoData, SingleCard } from "..";
 
+function isMatching(searchKey, element) {
+  if(element.title.toLowerCase().includes(searchKey) || element.description.toLowerCase().includes(searchKey)) return true;
+  for(var i = 0; i < element.techStack.length; i++) {
+    if(element.techStack[i].toLowerCase().includes(searchKey)) return true;
+  }
+  return false;
+}
+
 const index = ({ mainTitle, tagline, type, data }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(data);
 
   useEffect(() => {
-    const newFilteredData = data?.filter((element) =>
-      element.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    console.log("data", data);
+    const searchKey = searchTerm.toLowerCase();
+    const newFilteredData = data?.filter((element) => isMatching(searchKey, element));
     setFilteredData(newFilteredData);
   }, [searchTerm, data]);
 
