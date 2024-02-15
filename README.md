@@ -5,3 +5,5 @@
 - Expiry Date - Any Future Date <br/>
 - CVV - Any 3 Digits Number <br/>
 - Other cards: https://docs.stripe.com/testing#international-cards
+
+Other Details Coming soon :)

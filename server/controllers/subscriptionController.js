@@ -4,16 +4,6 @@ const Stripe = require("stripe");
 
 const stripe = Stripe(process.env.STRIPE_KEY);
 
-const stripeAddress = {
-    line1: "Hennur Main Road, Kalyan Nagar",
-    line2: "Kalyan Nagar, HBR Layout 4th Block",
-    city: "Bengaluru",
-    country: "India",
-    postal_code: "560043",
-    state: "Karnataka",
-};
-
-
 const subscribe = async (req, res, next) => {
   try {
     console.log("Inside subscribe")
