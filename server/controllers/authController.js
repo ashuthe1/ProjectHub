@@ -228,4 +228,4 @@ const logout = async (req, res) => {
   res.sendStatus(204);
 };
 
-module.exports = { register, login, sendOtp, forgotPassword, refreshToken, logout, testAPIRateLimiter};
+module.exports = { register, login, sendOtp, forgotPassword, refreshToken, logout};
