@@ -117,15 +117,14 @@ const forgotPassword = async (req, res, next) => {
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
-    console.log(req.body);
-    console.log("Before hashing")
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.findOneAndUpdate({email}, {
       $set: {
         password: hashedPassword,
+        otp: null,
       }
     });
-    console.log("Updated Password");
     await user.save();
     const foundUser = await User.findOne({ email});
     const accessToken = jwt.sign(
