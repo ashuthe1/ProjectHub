@@ -1,5 +1,11 @@
+const OTPLENGTH = 6;
+
 function generateOtp() {
-  return Math.floor(1000 + Math.random() * 9000);
+    var otp = "";
+    for(var i = 0; i < OTPLENGTH; i++) {
+        otp += Math.floor(Math.random() * 10);
+    }
+    return otp
 }
 
 module.exports = generateOtp;
