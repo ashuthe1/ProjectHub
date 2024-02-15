@@ -142,15 +142,24 @@ const rateProject = async (req, res, next) => {
     project.ratingDetails.sumOfRatings = currentSumOfRatings;
     project.ratingDetails.totalRatings = currentTotalRatings;
 
-    if(currentTotalRatings >= 1 && currentSumOfRatings >= 4) {
+    var ratingAverage = currentSumOfRatings / currentTotalRatings;
+
+    if((!project.isFeatured) && (currentTotalRatings >= 2 && ratingAverage >= 4)) {
       project.isFeatured = true;
       const key = generateRedisKey("/projects/featured");
       await redisClient.del(key);
-      await redisClient.set(key, JSON.stringify(project), "EX", CACHE_TTL);
+    }
+    else if(project.isFeatured && (ratingAverage < 4)) { 
+      project.isFeatured = false;
+      const key = generateRedisKey("/projects/featured");
+      await redisClient.del(key);
     }
 
     project.ratings.push({ user: req.user, rating: rating });
     await project.save();
+
+    const key = generateRedisKey(`/api/v1/project/${req.params.id}`);
+    await redisClient.del(key);
 
     res.status(201).json({ message: "Rating added successfully." });
   } catch (error) {
