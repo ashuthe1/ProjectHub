@@ -1,6 +1,8 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const generateOtp = require("../utils/generateOtp");
+const sendEmail = require("../utils/sendEmail");
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -88,6 +90,84 @@ const login = async (req, res, next) => {
   }
 };
 
+const sendOtp = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const foundUser = await User.findOne({ email});
+    if (!foundUser) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    const generatedOTP = generateOtp();
+    sendEmail(email, generatedOTP);
+    foundUser.otp = generatedOTP;
+    await foundUser.save();
+    res.json({ message: "OTP sent successfully" });
+  }
+  catch (error) {
+    next(error);
+  }
+}
+
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+    console.log(req.body);
+    console.log("Before hashing")
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.findOneAndUpdate({email}, {
+      $set: {
+        password: hashedPassword,
+      }
+    });
+    console.log("Updated Password");
+    await user.save();
+    const foundUser = await User.findOne({ email});
+    const accessToken = jwt.sign(
+      {
+        UserInfo: {
+          userId: foundUser._id.toString(),
+          name: foundUser.name,
+          email: foundUser.email,
+          profilePicture: foundUser.profilePicture,
+          roles: foundUser.roles,
+          favorites: foundUser.favorites,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "30m" }
+    );
+
+    const refreshToken = jwt.sign(
+      {
+        userId: foundUser._id,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "2d" }
+    );
+
+    foundUser.refreshToken = refreshToken;
+    const result = await foundUser.save();
+
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 2 * 24 * 60 * 60 * 1000,
+    });
+
+    res.json({ accessToken });
+  }
+  catch (error) {
+    next(error);
+  }
+};
+
 const refreshToken = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
@@ -149,4 +229,4 @@ const logout = async (req, res) => {
   res.sendStatus(204);
 };
 
-module.exports = { register, login, refreshToken, logout };
+module.exports = { register, login, sendOtp, forgotPassword, refreshToken, logout };

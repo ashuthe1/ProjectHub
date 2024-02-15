@@ -3,12 +3,17 @@ const router = express.Router();
 const {
   register,
   login,
+  sendOtp,
+  forgotPassword,
   refreshToken,
   logout,
 } = require("../controllers/authController");
+const verifyOtp = require("../middleware/verifyOtp");
 
 router.route("/login").post(login);
 router.route("/register").post(register);
+router.route("/sendOtp").post(sendOtp);
+router.route("/forgotPassword").post(verifyOtp, forgotPassword);
 router.route("/refresh").get(refreshToken);
 router.route("/logout").post(logout);
 
