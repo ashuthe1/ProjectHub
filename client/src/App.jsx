@@ -21,6 +21,8 @@ import {
   Users,
   SignIn,
   SignUp,
+  ForgotPassword,
+  VerifyEmail,
   CheckoutSuccess,
   CheckoutFailure,
 } from "./pages";
@@ -55,6 +57,14 @@ function App() {
             <Route
               path="signup"
               element={<SignUp />}
+            />
+            <Route
+              path="forgotPassword"
+              element={<ForgotPassword />}
+            />
+            <Route
+              path="verifyEmail"
+              element={<VerifyEmail />}
             />
           </Route>
 

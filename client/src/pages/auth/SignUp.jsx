@@ -105,7 +105,7 @@ const SignUp = () => {
             pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$`}
           />
           <Button
-            content={"Sign in"}
+            content={"Sign Up"}
             type={"submit"}
             customCss={"mt-3 rounded-lg"}
             loading={isLoading}

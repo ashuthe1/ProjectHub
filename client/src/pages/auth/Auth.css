@@ -1,0 +1,17 @@
+.forgotButton{
+    text-align: right;
+    color: black;
+    font-weight: bold;
+}
+
+.verifyEmailButton {
+    text-align: center;
+    color: black;
+    background-color: gold;
+}
+.retryButton{
+    text-align: center;
+    color: green;
+    /* background-color: rgb(0, 255, 42); */
+    /* font-weight: bold; */
+}

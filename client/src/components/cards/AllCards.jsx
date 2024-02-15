@@ -14,7 +14,6 @@ const index = ({ mainTitle, tagline, type, data }) => {
   const [filteredData, setFilteredData] = useState(data);
 
   useEffect(() => {
-    console.log("data", data);
     const searchKey = searchTerm.toLowerCase();
     const newFilteredData = data?.filter((element) => isMatching(searchKey, element));
     setFilteredData(newFilteredData);

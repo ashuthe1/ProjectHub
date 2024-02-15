@@ -13,8 +13,8 @@ const rateLimiter = require("../middleware/rateLimiter");
 
 router.route("/login").post(login);
 router.route("/register").post(register);
-router.route("/sendOtp").post(rateLimiter, sendOtp);
-router.route("/forgotPassword").post(rateLimiter, verifyOtp, forgotPassword);
+router.route("/sendOtp").post(sendOtp);
+router.route("/forgotPassword").post(verifyOtp, forgotPassword);
 router.route("/refresh").get(refreshToken);
 router.route("/logout").post(logout);
 

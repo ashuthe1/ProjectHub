@@ -92,6 +92,7 @@ const login = async (req, res, next) => {
 
 const sendOtp = async (req, res, next) => {
   try {
+    console.log(req.body);
     const { email } = req.body;
     if (!email) return res.status(400).json({ message: "Email is required" });
 
@@ -101,7 +102,8 @@ const sendOtp = async (req, res, next) => {
     }
 
     const generatedOTP = generateOtp();
-    sendEmail(email, generatedOTP);
+    console.log(generatedOTP);
+    // sendEmail(email, generatedOTP);
     foundUser.otp = generatedOTP;
     await foundUser.save();
     res.json({ message: "OTP sent successfully" });

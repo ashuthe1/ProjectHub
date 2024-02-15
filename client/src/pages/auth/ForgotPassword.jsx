@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import { Button, Input, Logo } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
-import { BiLockAlt } from "react-icons/bi";
+import { BiLockAlt, BiArrowBack } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignInMutation } from "../../features/auth/authApiSlice";
+import { useSendOtpMutation } from "../../features/auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
 
 import "./Auth.css";
-const SignIn = () => {
+const ForgotPassword = () => {
   const [formDetails, setFormDetails] = useState({
     email: "",
-    password: "",
   });
-  const [signIn, { isLoading }] = useSignInMutation();
+  const [sendOtp, { isLoading }] = useSendOtpMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useTitle("ProjectHub - Sign In");
+  useTitle("ProjectHub - Send OTP");
 
   const handleChange = (e) => {
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
@@ -29,17 +28,17 @@ const SignIn = () => {
 
     try {
       const userData = await toast.promise(
-        signIn({ ...formDetails }).unwrap(),
+        sendOtp({ ...formDetails }).unwrap(),
         {
           pending: "Please wait...",
-          success: "Sign in successfull",
-          error: "Sign in failed",
+          success: "OTP Sent successfully",
+          error: "OTP Send failed",
         }
       );
       dispatch(setCredentials({ ...userData }));
       localStorage.setItem("persist", true);
-      setFormDetails({ email: "", password: "" });
-      navigate("/");
+      setFormDetails({ email: ""});
+      navigate("/auth/verifyEmail");
     } catch (error) {
       toast.error(error.data);
       console.error(error);
@@ -54,17 +53,8 @@ const SignIn = () => {
         {/* Sign in form heading */}
         <div className="mt-12 mb-6 flex flex-col gap-3">
           <h2 className="text-center md:text-left font-bold text-3xl">
-            Welcome back
+          Reset your password
           </h2>
-          <p className="text-center md:text-left text-sm">
-            New to Project Hub?{" "}
-            <Link
-              to={"/auth/signup"}
-              className="text-primary font-semibold"
-            >
-              Create an account
-            </Link>
-          </p>
         </div>
         {/* Sign in form */}
         <form
@@ -80,29 +70,21 @@ const SignIn = () => {
             label={"Email"}
             placeholder={"example@abc.com"}
           />
-          <Input
-            type={"password"}
-            id={"password"}
-            icon={<BiLockAlt />}
-            handleChange={handleChange}
-            value={formDetails.password}
-            label={"Password"}
-            placeholder={"At least 6 characters long"}
-          />
-          <Link to={"/auth/forgotPassword"}> <p className='forgotButton'> Forgot Password </p> </Link>
           <Button
-            content={"Sign in"}
+            content={"Send OTP"}
             type={"submit"}
             customCss={"mt-5 rounded-lg"}
             loading={isLoading}
           />
+          <div className="mt-6 flex items-center justify-between">
+                  <Link to = "/auth/signin">
+                     <p className="flex items-center gap-x-2 text-richblack-5"> <BiArrowBack /> Back To Login </p>
+                  </Link>
+                </div>
         </form>
       </div>
-      {/* Sign in banner image */}
-      {/* <img src="http://image.png"></img> */}
-      {/* <div className="hidden md:block basis-1/2 bg-login bg-no-repeat bg-cover bg-center"></div> */}
     </section>
   );
 };
 
-export default SignIn;
+export default ForgotPassword;
