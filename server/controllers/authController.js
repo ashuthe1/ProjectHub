@@ -4,10 +4,6 @@ const jwt = require("jsonwebtoken");
 const generateOtp = require("../utils/generateOtp");
 const sendEmail = require("../utils/sendEmail");
 
-const testAPIRateLimiter = (req, res) => {
-  res.json({ message: "API rate limit test passed" });
-};
-
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
 
