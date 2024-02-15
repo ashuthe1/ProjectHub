@@ -19,13 +19,14 @@ const uploadImage = async (e, setProgress, setFormDetails, formDetails) => {
 
     data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
 
-    const {
+    var {
       data: { url },
     } = await axios.post(
       import.meta.env.VITE_CLOUDINARY_BASE_URL,
       data,
       config
     );
+    url = url.replace("http", "https");
     setFormDetails({ ...formDetails, [e.target.id]: url });
   } else {
     console.error("Please select an image in jpeg or png format");
