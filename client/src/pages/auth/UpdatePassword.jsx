@@ -20,6 +20,8 @@ const UpdatePassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useTitle("ProjectHub - Reset Password");
+  const curUserEmail = useSelector(selectCurrentEmail);
+  const curUserOtp = useSelector(selectCurrentOtp);
 
   const handleChange = (e) => {
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
@@ -34,14 +36,17 @@ const UpdatePassword = () => {
       toast.error("Passwords do not match");
       return;
     }
+    console.log("curUserOtp", curUserOtp);
+    console.log("curUserEmail", curUserEmail);
     try {
-      const email = useSelector(selectCurrentEmail);
-      const otp = useSelector(selectCurrentOtp);
+      console.log("curUserOtp", curUserOtp);
+      console.log("curUserEmail", curUserEmail);
       const verificationData = {
-        otp: otp,
-        email: email,
+        otp: curUserOtp,
+        email: curUserEmail,
         password: formDetails.password,
       };
+      console.log(verificationData);
       const userData = await toast.promise(
         forgotPassword({ verificationData }).unwrap(),
         {
