@@ -89,7 +89,7 @@ const SignIn = () => {
             label={"Password"}
             placeholder={"At least 6 characters long"}
           />
-          <Link to={"/auth/sendOtp"}> <p className='forgotButton'> Forgot Password </p> </Link>
+          <Link to={"/auth/sendOtp"}> <p className='forgotButton'> Forgot Password? </p> </Link>
           <Button
             content={"Sign in"}
             type={"submit"}

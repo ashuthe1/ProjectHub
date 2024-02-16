@@ -103,7 +103,7 @@ const sendOtp = async (req, res, next) => {
 
     const generatedOTP = generateOtp();
     console.log(generatedOTP);
-    // sendEmail(email, generatedOTP);
+    sendEmail(email, generatedOTP);
     foundUser.otp = generatedOTP;
     await foundUser.save();
     res.json({ message: "OTP sent successfully" });
