@@ -5,11 +5,8 @@ const MAX_REQUESTS = 5;
 
 const rateLimiter = async (req, res, next) => {   
     const userIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-    const ipAddress = userIp.split('.');
-    var actualIp = "";
-    for(let i = 0; i < 4; i++) {
-        actualIp += ipAddress[i];
-    }
+    const ipAddress = userIp.split(',');
+    var actualIp = ipAddress[0];
     console.log(actualIp);
     const key = `rateLimiterIp:${actualIp}`;
     console.log(key);
