@@ -17,7 +17,7 @@ router.route("/register").post(register);
 router.route("/sendOtp").post(sendOtp);
 // router.route("/verifyOtp").post(verifyOtp);
 router.route("/verifyOtp1").post(verifyOtp1);
-router.route("/forgotPassword").post(verifyOtp, forgotPassword);
+router.route("/forgotPassword").post(forgotPassword);
 router.route("/refresh").get(refreshToken);
 router.route("/logout").post(logout);
 

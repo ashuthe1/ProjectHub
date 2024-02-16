@@ -5,7 +5,7 @@ import { Button, Input, Logo } from "../../components";
 import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import {setOtp, selectCurrentEmail} from "../../features/auth/authSlice";
+import {setOtp, setEmail, selectCurrentEmail} from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { useVerifyOtpMutation } from "../../features/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ function VerifyEmail() {
     e.preventDefault();
     e.preventDefault();
     dispatch(setOtp(inputBoxOtp));
+    dispatch(setEmail(email));
     try {
       const verificationData = {
         otp: inputBoxOtp,

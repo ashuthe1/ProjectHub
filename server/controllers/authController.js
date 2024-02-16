@@ -136,19 +136,24 @@ const verifyOtp1 = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, otp } = req.body;
+    console.log("Inside Forgot Password ", req.body);
+
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
 
+    const userInitial = await User.findOne({email});
+    if (!userInitial) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if(userInitial.otp !== otp) {
+      return res.status(401).json({ message: "Invalid OTP" });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.findOneAndUpdate({email}, {
-      $set: {
-        password: hashedPassword,
-        otp: null,
-      }
-    });
-    await user.save();
+    userInitial.password = hashedPassword;
+    userInitial.otp = null;
+    await userInitial.save();
     const foundUser = await User.findOne({ email});
     const accessToken = jwt.sign(
       {
