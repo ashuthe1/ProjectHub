@@ -1,7 +1,7 @@
 const redisClient = require("../config/redisClient");
 
 const TTL = 60 * 10;
-const MAX_REQUESTS = 6;
+const MAX_REQUESTS = 5;
 
 const rateLimiter = async (req, res, next) => {   
     const userIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
