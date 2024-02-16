@@ -7,7 +7,7 @@ import { RxCountdownTimer } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import {setOtp, setEmail, selectCurrentEmail} from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
-import { useVerifyOtpMutation } from "../../features/auth/authApiSlice";
+import { useVerifyOtpMutation, useSendOtpMutation } from "../../features/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
@@ -18,7 +18,28 @@ function VerifyEmail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const email = useSelector(selectCurrentEmail);
+  const [sendOtp, { isLoading2 }] = useSendOtpMutation();
 
+  const formDetails = {
+    email: email,
+  };
+  const handleResendOtp = async () => {
+    try {
+      const userData = await toast.promise(
+        sendOtp({ ...formDetails}).unwrap(),
+        {
+          pending: "Please wait...",
+          success: "OTP Sent successfully",
+          error: "OTP Send failed",
+        }
+      );
+      localStorage.setItem("persist", true);
+      navigate("/auth/verifyEmail");
+    } catch (error) {
+      toast.error(error.data);
+      console.error(error);
+    }
+  };
   const handleSubmit = async (e) => {
     console.log("email", email);
     console.log("inputBoxOtp", inputBoxOtp);
@@ -83,7 +104,7 @@ function VerifyEmail() {
                 <Link to="/auth/signin">
                   <p className="text-richblack-5 flex items-center gap-x-2"> <BiArrowBack /> Back To LogIn </p>
                 </Link>
-                <button className="flex items-center text-blue-100 gap-x-2 retryButton"> <RxCountdownTimer /> Resend it </button>          
+                <button className="flex items-center text-blue-100 gap-x-2 retryButton" onClick={handleResendOtp}> <RxCountdownTimer /> Resend it </button>          
               </div>
 
             </div>
