@@ -5,12 +5,12 @@ import { BiLockAlt, BiArrowBack } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSendOtpMutation } from "../../features/auth/authApiSlice";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../../features/auth/authSlice";
+import { setEmail } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
 
 import "./Auth.css";
-const ForgotPassword = () => {
+const SendOtp = () => {
   const [formDetails, setFormDetails] = useState({
     email: "",
   });
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
           error: "OTP Send failed",
         }
       );
-      dispatch(setCredentials({ ...userData }));
+      dispatch(setEmail(formDetails.email));
       localStorage.setItem("persist", true);
       setFormDetails({ email: ""});
       navigate("/auth/verifyEmail");
@@ -87,4 +87,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default SendOtp;

@@ -27,8 +27,9 @@ const DashboardBlogs = lazy(() => import("./dashboard/DashboardBlogs"));
 
 const SignIn = lazy(() => import("./auth/SignIn"));
 const SignUp = lazy(() => import("./auth/SignUp"));
-const ForgotPassword = lazy(() => import("./auth/ForgotPassword"));
+const SendOtp = lazy(() => import("./auth/SendOtp"));
 const VerifyEmail = lazy(() => import("./auth/VerifyEmail"));
+const UpdatePassword = lazy(() => import("./auth/UpdatePassword"));
 
 export {
   Home,
@@ -53,6 +54,7 @@ export {
   CheckoutFailure,
   SignIn,
   SignUp,
-  ForgotPassword,
+  SendOtp,
   VerifyEmail,
+  UpdatePassword,
 };

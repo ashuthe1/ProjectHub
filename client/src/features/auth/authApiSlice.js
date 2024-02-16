@@ -1,5 +1,5 @@
 import { apiSlice } from "../../redux/apiSlice";
-import { logOut, setCredentials } from "./authSlice";
+import { logOut, setEmail, setOtp, setCredentials } from "./authSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,6 +20,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
     sendOtp: builder.mutation({
       query: (credentials) => ({
         url: "/auth/sendOtp",
+        method: "POST",
+        body: { ...credentials },
+      }),
+    }),
+    verifyOtp: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/verifyOtp1",
         method: "POST",
         body: { ...credentials },
       }),
@@ -66,6 +73,7 @@ export const {
   useSignInMutation,
   useSignUpMutation,
   useSendOtpMutation,
+  useVerifyOtpMutation,
   useForgotPasswordMutation,
   useLogoutMutation,
   useRefreshMutation,

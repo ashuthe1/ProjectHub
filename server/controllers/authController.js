@@ -113,6 +113,27 @@ const sendOtp = async (req, res, next) => {
   }
 }
 
+const verifyOtp1 = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
+    }
+    const foundUser = await User.findOne({ email });
+    if (!foundUser) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    if (foundUser.otp !== otp) {
+      return res.status(401).json({ message: "Invalid OTP" });
+    }
+    return res.status(200).json({ message: "OTP verified successfully" });
+  }
+  catch (error) {
+    next(error);
+  }
+}
+
 const forgotPassword = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -230,4 +251,4 @@ const logout = async (req, res) => {
   res.sendStatus(204);
 };
 
-module.exports = { register, login, sendOtp, forgotPassword, refreshToken, logout};
+module.exports = { register, login, sendOtp, verifyOtp1, forgotPassword, refreshToken, logout};

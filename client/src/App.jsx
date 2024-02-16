@@ -21,8 +21,9 @@ import {
   Users,
   SignIn,
   SignUp,
-  ForgotPassword,
+  SendOtp,
   VerifyEmail,
+  UpdatePassword,
   CheckoutSuccess,
   CheckoutFailure,
 } from "./pages";
@@ -59,12 +60,16 @@ function App() {
               element={<SignUp />}
             />
             <Route
-              path="forgotPassword"
-              element={<ForgotPassword />}
+              path="sendOtp"
+              element={<SendOtp />}
             />
             <Route
               path="verifyEmail"
               element={<VerifyEmail />}
+            />
+            <Route
+              path="updatePassword"
+              element={<UpdatePassword />}
             />
           </Route>
 
