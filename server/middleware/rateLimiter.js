@@ -5,7 +5,14 @@ const MAX_REQUESTS = 5;
 
 const rateLimiter = async (req, res, next) => {   
     const userIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-    const key = `rateLimiterIp:${userIp}`;
+    const ipAddress = userIp.split('.');
+    var actualIp = "";
+    for(let i = 0; i < 4; i++) {
+        actualIp += ipAddress[i];
+    }
+    console.log(actualIp);
+    const key = `rateLimiterIp:${actualIp}`;
+    console.log(key);
     const requestCount = await redisClient.incr(key);
 
     var timeLeft;
