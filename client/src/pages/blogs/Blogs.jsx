@@ -22,9 +22,9 @@ const Blogs = () => {
         <ComponentLoading />
       ) : (
         <AllCards
-          mainTitle={"Explore our Culinary Insights"}
+          mainTitle={"Explore our Blog Posts!"}
           tagline={
-            "Embark on a flavorful journey with our delightful blog posts!"
+            "Embark on a Learning journey with our engaging articles & blog posts!"
           }
           type={"blog"}
           data={data}
