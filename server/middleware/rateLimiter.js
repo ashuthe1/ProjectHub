@@ -4,8 +4,8 @@ const TTL = 60 * 10;
 const MAX_REQUESTS = 5;
 
 const rateLimiter = async (req, res, next) => {   
-    const userIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-    const ipAddress = userIp.split(',');
+    const userIps = (req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+    const ipAddress = userIps.split(',');
     var actualIp = ipAddress[0];
     console.log(actualIp);
     const key = `rateLimiterIp:${actualIp}`;
