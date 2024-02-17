@@ -12,7 +12,8 @@ const getAllProjects = async (req, res, next) => {
       .populate("author", "name");
 
     const key = generateRedisKey(req.originalUrl);
-    await redisClient.set(key, JSON.stringify(projects), "EX", CACHE_TTL);
+    await redisClient.set(key, JSON.stringify(projects));
+    await redisClient.expire(key, CACHE_TTL);
     res.status(200).send(projects);
   } catch (error) {
     next(error);
@@ -23,7 +24,8 @@ const getFeaturedProjects = async (req, res, next) => {
   try {
     const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
     const key = generateRedisKey(req.originalUrl);
-    await redisClient.set(key, JSON.stringify(featuredProjects), "EX", CACHE_TTL);
+    await redisClient.set(key, JSON.stringify(featuredProjects));
+    await redisClient.expire(key, CACHE_TTL);
     res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);
@@ -37,7 +39,8 @@ const getProject = async (req, res, next) => {
       .populate("comments.user", ["name", "profilePicture"]);
 
     const key = generateRedisKey(req.originalUrl);
-    await redisClient.set(key, JSON.stringify(project), "EX", CACHE_TTL);
+    await redisClient.set(key, JSON.stringify(project));
+    await redisClient.expire(key, CACHE_TTL);
 
     res.status(200).send(project);
   } catch (error) {
@@ -110,7 +113,8 @@ const updateProject = async (req, res, next) => {
     
     const key = generateRedisKey(req.originalUrl);
     await redisClient.del(key);
-    await redisClient.set(key, JSON.stringify(project), "EX", CACHE_TTL);
+    await redisClient.set(key, JSON.stringify(project));
+    await redisClient.expire(key, CACHE_TTL);
 
     res.status(201).json(project);
   } catch (error) {
