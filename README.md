@@ -6,4 +6,18 @@
 - CVV - Any 3 Digits Number <br/>
 - Other cards: https://docs.stripe.com/testing#international-cards
 
+Install Redis on your System and make sure it's up and running <br/>
+
+In Root directory run following commands
+```
+cd client
+npm install
+npm run dev
+```
+In Root directory run following commands
+```
+cd server
+npm install
+npm run dev
+```
 Other Details Coming soon :)
