@@ -1,12 +1,22 @@
-.heroBg{
-    /* border: 2px solid red; */
-    margin-top: 2em;
-    /* margin-right: 10px; */
-    height: 100%;
-    width:65%;
+.heroBg {
+  /* border: 2px solid red; */
+  margin-top: 2em;
+  height: 100%;
+  width: 65%;
+  animation: updown 3s linear infinite;
 }
-
-.left{
-    /* border: 2px solid red; */
-    width: 50%;
+@keyframes updown {
+    0% {
+      transform: translateY(-20px);
+    }
+    50% {
+      transform: translateY(20px);
+    }
+    100% {
+      transform: translateY(-20px);
+    }
+  }
+.left {
+  /* border: 2px solid red; */
+  width: 50%;
 }
