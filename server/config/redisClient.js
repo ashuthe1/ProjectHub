@@ -1,6 +1,16 @@
-const {Redis} = require('ioredis');
+const { createClient } = require('redis');
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
-const redisClient = new Redis(REDIS_URL);
+const redisClient = createClient({
+    password: process.env.REDIS_SERVER_PASSWORD,
+    socket: {
+        host: process.env.REDIS_SERVER_URL,
+        port: process.env.REDIS_SERVER_PORT
+    }
+});
+
+async function connectRedisClient() {
+    await redisClient.connect();
+};
+connectRedisClient();
 
 module.exports = redisClient;
