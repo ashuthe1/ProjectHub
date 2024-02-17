@@ -9,7 +9,7 @@ import {
 } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
 import { FaRegPaperPlane } from "react-icons/fa";
-import { LuChefHat } from "react-icons/lu";
+import { LuChefHat, LuUser } from "react-icons/lu";
 import { BsStopwatch, BsGithub } from "react-icons/bs";
 import { LiaWeightSolid } from "react-icons/lia";
 import { AiOutlineHeart, AiFillHeart, AiOutlineUser } from "react-icons/ai";
@@ -214,7 +214,7 @@ const SingleProject = () => {
               </div>
               <div className="flex justify-between items-center">
                 <p className="flex gap-2 items-center font-semibold">
-                  <LuChefHat className="text-primary" />
+                  <LuUser className="text-primary" />
                   {data?.author?.name}
                 </p>
                 <div className="flex gap-2 p-2 bg-light rounded-l-lg">
