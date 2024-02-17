@@ -23,7 +23,7 @@ const Home = () => {
       <HomeCategories
         title={"blog"}
         data={blogs?.data}
-        isLoading={true}
+        isLoading={blogs?.isLoading}
       />
     </>
   );
