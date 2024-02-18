@@ -11,8 +11,7 @@ const Subscribe = () => {
           Pay once, use forever
         </h2>
         <p className="text-sm text-gray-500 text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-          perferendis optio omnis? Id, ipsa eos.
+        Empower Your Journey: Select Your Plan, Embrace Success with Limitless Possibilities!
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 w-full md:w-[80%] lg:w-[50%]">
