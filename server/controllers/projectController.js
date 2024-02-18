@@ -25,7 +25,7 @@ const getFeaturedProjects = async (req, res, next) => {
     const featuredProjects = await Project.find({ isFeatured: true }).sort({ createdAt: -1 }).limit(6);
     const key = generateRedisKey(req.originalUrl);
     await redisClient.set(key, JSON.stringify(featuredProjects));
-    await redisClient.expire(key, CACHE_TTL);
+    // await redisClient.expire(key, CACHE_TTL);
     res.status(200).send(featuredProjects);
   } catch (error) {
     next(error);

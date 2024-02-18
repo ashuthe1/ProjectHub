@@ -1,8 +1,14 @@
 const Blog = require("../models/blogModel");
+const redisClient = require("../config/redisClient");
+const generateRedisKey = require("../utils/generateRedisKey");
+const CACHE_TTL = 60 * 60;
 
 const getAllBlogs = async (req, res, next) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 }).populate("author");
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(blogs));
+    // await redisClient.expire(key, CACHE_TTL);
     res.status(200).json(blogs);
   } catch (error) {
     next(error);
