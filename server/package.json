@@ -26,6 +26,7 @@
     "mailtrap": "^3.3.0",
     "mongoose": "^7.4.1",
     "redis": "^4.6.13",
+    "socket.io": "^4.7.4",
     "stripe": "^12.17.0"
   },
   "devDependencies": {
