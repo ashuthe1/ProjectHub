@@ -23,6 +23,8 @@ app.use("/api/v1/user", require("./routes/userRoutes"));
 app.use("/api/v1/project", require("./routes/projectRoutes"));
 app.use("/api/v1/blog", require("./routes/blogRoutes"));
 app.use("/api/v1/stripe", require("./routes/subscriptionRoutes"));
+app.use("/api/v1/chat", require("./routes/chatRoutes"));
+app.use("/api/v1/message", require("./routes/messageRoutes"));
 
 app.get("/api/v1/health", (req, res) => {
   res.send("Server is up and running healthy!");
