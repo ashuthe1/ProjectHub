@@ -1,11 +1,11 @@
 const asyncHandler = require('express-async-handler')
 const Chat = require("../models/chatModel");
 
-// Create New Chat
+// Create Chat between 2 users (If not exists)
 const newChat = asyncHandler(async (req, res, next) => {
   const chatExists = await Chat.findOne({
     users: {
-      $all: [req.user._id, req.body.receiverId],
+      $all: [req.user, req.body.receiverId],
     },
   });
 
@@ -17,7 +17,7 @@ const newChat = asyncHandler(async (req, res, next) => {
   }
 
   const newChat = await Chat.create({
-    users: [req.user._id, req.body.receiverId],
+    users: [req.user, req.body.receiverId],
   });
 
   res.status(200).json({
@@ -26,11 +26,11 @@ const newChat = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Get All Chats
+// Get All Chats of the user with latestMessages
 const getChats = asyncHandler(async (req, res, next) => {
   const chats = await Chat.find({
     users: {
-      $in: [req.user._id],
+      $in: [req.user],
     },
   })
     .sort({ updatedAt: -1 })

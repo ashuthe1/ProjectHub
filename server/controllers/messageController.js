@@ -2,12 +2,12 @@ const asyncHandler = require('express-async-handler')
 const Message = require("../models/messageModel");
 const Chat = require("../models/chatModel");
 
-// Send New Message
+// Send New Message in a Chat (between 2 users, based on chatId)
 const newMessage = asyncHandler(async (req, res, next) => {
   const { chatId, content } = req.body;
 
   const msgData = {
-    sender: req.user._id,
+    sender: req.user,
     chatId,
     content,
   };
@@ -22,7 +22,7 @@ const newMessage = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Get All Messages
+// Get All Messages (between 2 users, based on chatId)
 const getMessages = asyncHandler(async (req, res, next) => {
   const messages = await Message.find({
     chatId: req.params.chatId,
