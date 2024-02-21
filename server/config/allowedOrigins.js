@@ -3,7 +3,8 @@ const allowedOrigins = [
     "http://0.0.0.0:5173",
     "http://localhost:5173", // development
     "https://theprojecthub.vercel.app", // production
-    "https://theprojecthubserver.onrender.com"
+    "https://theprojecthubserver.onrender.com",
+    "https://pink-energetic-caridea.cyclic.app" // cyclic deployment
 ];
   
 module.exports = allowedOrigins;
