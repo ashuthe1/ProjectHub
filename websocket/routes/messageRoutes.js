@@ -1,9 +1,9 @@
 const express = require("express");
 const { newMessage, getMessages } = require("../controllers/messageController");
 
-const ROLES_LIST = require("../config/rolesList");
-const verifyJwt = require("../middleware/verifyJwt");
-const verifyRoles = require("../middleware/verifyRoles");
+const ROLES_LIST = require("../../server/config/rolesList");
+const verifyJwt = require("../../server/middleware/verifyJwt");
+const verifyRoles = require("../../server/middleware/verifyRoles");
 
 const router = express.Router();
 
