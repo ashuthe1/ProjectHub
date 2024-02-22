@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const Chat = require("../../server/models/chatModel");
+const Chat = require("../models/chatModel");
 
 // Create Chat between 2 users (If not exists)
 const newChat = asyncHandler(async (req, res, next) => {
