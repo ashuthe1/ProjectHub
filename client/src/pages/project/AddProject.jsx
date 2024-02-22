@@ -185,14 +185,14 @@ const AddProject = () => {
                 focused={focused.githubLink.toString()}
                 aria-required="true"
                 aria-describedby="githubLink-error"
-                placeholder="Enter Github Link"
+                placeholder="www.github.com/ashuthe1/projectHub"
                 className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary"
               />
               <span
                 id="githubLink-error"
                 className="hidden text-red-500 pl-2 text-sm mt-1"
               >
-                Project must have Github Link
+                Project must have a GitHub Link
               </span>
             </div>
           </div>
@@ -210,13 +210,12 @@ const AddProject = () => {
                 onChange={handleChange}
                 value={formDetails.liveLink}
                 id="liveLink"
-                required
                 name="liveLink"
                 onBlur={handleFocus}
                 focused={focused.liveLink.toString()}
                 aria-required="true"
                 aria-describedby="liveLink-error"
-                placeholder="Enter live link"
+                placeholder="www.projecthub.com"
                 className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary"
               />
               <span
@@ -279,7 +278,7 @@ const AddProject = () => {
                 htmlFor="longDescription"
                 className="text-sm font-semibold mb-3 basis-1/2"
               >
-                Enter Long Description about Project!
+                Key Features of the Project!
               </label>
               <Button
                 content={"Add"}
@@ -296,7 +295,7 @@ const AddProject = () => {
                 name="longDescription"
                 rows="7"
                 aria-required="true"
-                placeholder="Write your steps here..."
+                placeholder="Enabled users to search projects based on preferred tech stack and execute CRUD operations on their posts."
                 className="p-1.5 border bg-gray-100 rounded focus:outline outline-primary w-full resize-none"
               ></textarea>
               {/* All added longDescription */}
@@ -307,7 +306,7 @@ const AddProject = () => {
                     key={`step-${i}`}
                   >
                     <div className="flex flex-col">
-                      <h3 className="font-bold">Step {i + 1}</h3>
+                      <h3 className="font-bold">Feature {i + 1}</h3>
                       <p className="text-sm text-gray-700">{ele}</p>
                     </div>
                     <div>

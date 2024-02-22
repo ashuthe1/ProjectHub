@@ -12,7 +12,8 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { LuChefHat, LuUser } from "react-icons/lu";
 import { BsStopwatch, BsGithub } from "react-icons/bs";
 import { LiaWeightSolid } from "react-icons/lia";
-import { AiOutlineHeart, AiFillHeart, AiOutlineUser } from "react-icons/ai";
+import { AiFillGithub, AiOutlineHeart, AiFillHeart, AiOutlineUser } from "react-icons/ai";
+import { motion } from "framer-motion";
 import {FaLaptopCode} from "react-icons/fa";
 import {
   useGetProjectQuery,
@@ -22,7 +23,7 @@ import {
   useToggleFavoriteMutation,
   useDeleteProjectMutation,
 } from "../../features/project/projectApiSlice";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { NavLink, Link, useNavigate, useParams } from "react-router-dom";
 import { Rating, IconButton, Menu, MenuItem } from "@mui/material";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../features/auth/authSlice";
@@ -30,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MoreVert } from "@mui/icons-material";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
+import './SingleProject.css';
 
 const SingleProject = () => {
   useTitle("ProjectHub - Project");
@@ -244,14 +246,16 @@ const SingleProject = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-between w-2/3 mx-auto">
                 <div className="flex flex-col gap-1 items-center text-gray-800">
                   <BsGithub className="text-5xl" />
-                  <h3 className="font-bold text-xl text-primary">Github Link</h3>
+                  <Link to={data?.githubLink} target="__blank">
+                    <h3 className="font-bold text-xl text-primary">GitHub Link</h3>
+                  </Link>
                   <p>{data?.githubLink}</p>
                 </div>
                 <div className="flex flex-col gap-1 items-center">
                   <FaLaptopCode className="text-5xl text-gray-800" />
-                  <h3 className="font-bold text-xl text-primary">
-                    Live Link
-                  </h3>
+                  <Link to={data?.liveLink} target="__blank">
+                    <h3 className="font-bold text-xl text-primary">Live Link</h3>
+                  </Link>
                   <p>{data?.liveLink}</p>
                 </div>
               </div>

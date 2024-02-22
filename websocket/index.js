@@ -12,8 +12,8 @@ const connectDB = require("./database/connection");
 const PORT = process.env.PORT || 8081;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017/ProjectHub'
 
-app.use("/api/v1/chat", require("./routes/chatRoutes"));
-app.use("/api/v1/message", require("./routes/messageRoutes"));
+app.use("/api/v2/chat", require("./routes/chatRoutes"));
+app.use("/api/v2/message", require("./routes/messageRoutes"));
 
 var server;
 connectDB(MONGODB_URI)
