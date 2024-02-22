@@ -1,5 +1,5 @@
 .linkClass {
-    /* justify-content: center;
-    text-align: center;
-    border: 2px solid red; */
+    /* color: blue; */
+    text-decoration: underline;
+    cursor: pointer;
 }

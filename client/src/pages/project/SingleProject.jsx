@@ -244,20 +244,20 @@ const SingleProject = () => {
               />
               <p className="my-4">{data?.description}</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-between w-2/3 mx-auto">
-                <div className="flex flex-col gap-1 items-center text-gray-800">
-                  <BsGithub className="text-5xl" />
-                  <Link to={data?.githubLink} target="__blank">
-                    <h3 className="font-bold text-xl text-primary">GitHub Link</h3>
-                  </Link>
-                  <p>{data?.githubLink}</p>
-                </div>
-                <div className="flex flex-col gap-1 items-center">
-                  <FaLaptopCode className="text-5xl text-gray-800" />
-                  <Link to={data?.liveLink} target="__blank">
-                    <h3 className="font-bold text-xl text-primary">Live Link</h3>
-                  </Link>
-                  <p>{data?.liveLink}</p>
-                </div>
+                <Link to={data?.githubLink} target="__blank">
+                  <div className="flex flex-col gap-1 items-center text-gray-800">
+                    <BsGithub className="text-5xl" />
+                      <h3 className="font-bold text-xl text-primary">GitHub Link</h3>
+                      <p className="linkClass">{data?.githubLink}</p>
+                  </div>
+                </Link>
+                <Link to={data?.liveLink} target="__blank">
+                  <div className="flex flex-col gap-1 items-center">
+                    <FaLaptopCode className="text-5xl text-gray-800" />
+                      <h3 className="font-bold text-xl text-primary">Live Link</h3>
+                      <p className="linkClass">{data?.liveLink}</p>
+                    </div>
+                </Link>
               </div>
             </div>
           </div>
