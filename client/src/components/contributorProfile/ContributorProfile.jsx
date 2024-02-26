@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useUpdateUserMutation } from "../../features/user/userApiSlice";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
-import { GoOrganization, GoPeople, GoPersonAdd, GoRepo, GoLink, GoLocation, GoMail, GoBrowser, GoMention, GoMoon, GoSun } from 'react-icons/go';
+import { GoOrganization, GoPeople, GoPersonAdd, GoRepo, GoLink, GoLocation, GoMail, GoBrowser, GoMention, GoMoon, GoSun, GoStar} from 'react-icons/go';
 import './ContributorProfile.css';
 
 const userProfile = {
@@ -88,7 +88,7 @@ const ContributorProfile = ({ user }) => {
                         </div>
                         <div className='user-cell-titles'>
                             <h3 className='text-[24px] textWhite'>{userProfile.public_repos}</h3>
-                            <p className='user-p-tag text-[18px]'>Repositories</p>
+                            <p className='user-p-tag text-[18px]'>Projects</p>
                         </div>
                     </span>
 
