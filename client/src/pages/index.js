@@ -15,6 +15,8 @@ const AddProject = lazy(() => import("./project/AddProject"));
 const MyProjects = lazy(() => import("./project/MyProjects"));
 const EditProject = lazy(() => import("./project/EditProject"));
 
+const Contributors = lazy(() => import("./contributors/Contributors"));
+
 const Blogs = lazy(() => import("./blogs/Blogs"));
 const AddBlog = lazy(() => import("./blogs/AddBlog"));
 const SingleBlog = lazy(() => import("./blogs/SingleBlog"));
@@ -41,6 +43,7 @@ export {
   AddProject,
   MyProjects,
   EditProject,
+  Contributors,
   Blogs,
   AddBlog,
   SingleBlog,

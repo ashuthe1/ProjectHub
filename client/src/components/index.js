@@ -20,6 +20,7 @@ import Avatar from "./avatar/Avatar";
 import ScrollToTop from "./scrollToTop/ScrollToTop";
 import ShareButton from "./shareButton/ShareButton";
 import NoData from "./noData/NoData";
+import ContributorProfile from "./contributorProfile/ContributorProfile";
 
 export {
   Header,
@@ -44,4 +45,5 @@ export {
   ScrollToTop,
   ShareButton,
   NoData,
+  ContributorProfile,
 };

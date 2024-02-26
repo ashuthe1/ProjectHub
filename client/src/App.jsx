@@ -13,6 +13,7 @@ import {
   Home,
   MyBlogs,
   MyProjects,
+  Contributors,
   Profile,
   Project,
   SavedProjects,
@@ -136,6 +137,10 @@ function App() {
                   />
                 </Route>
               </Route>
+              <Route
+                path="contributors"
+                element={<Contributors />}
+              />
               <Route
                 path="contact"
                 element={<Contact />}
