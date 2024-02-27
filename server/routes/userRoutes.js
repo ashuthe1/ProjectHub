@@ -11,7 +11,7 @@ const verifyRoles = require("../middleware/verifyRoles");
 
 const router = express.Router();
 
-router.route("/").get([verifyJwt, verifyRoles(ROLES_LIST.Admin)], getAllUsers);
+router.route("/").get(getAllUsers);
 
 router
   .route("/:id")

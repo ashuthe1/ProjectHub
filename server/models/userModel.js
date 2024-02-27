@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
     },
     profilePicture: { 
         type: String, 
-        default: "" 
+        default: "https://cdn-icons-png.freepik.com/512/3237/3237447.png" 
     },
     favorites: [
       {
