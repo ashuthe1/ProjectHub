@@ -15,9 +15,14 @@ import { FaLinkedin } from "react-icons/fa";
 import { GoOrganization, GoPeople, GoPaperAirplane, GoPersonAdd, GoRepo, GoLink, GoLocation, GoMail, GoBrowser, GoMention, GoMoon, GoSun, GoStar} from 'react-icons/go';
 import './ContributorProfile.css';
 
+async function handleFollow() {
+  console.log("Followed");
+}
+async function handleSendMessage() {
+  console.log("Message Sent");
+}
 const ContributorProfile = (userProfile) => {
     useTitle("ProjectHub - Contributors");
-    // const {location, email, followers, following, public_repos, blog, avatar_url, type} = userProfile.data;
     return (
         <>
       <span className={`flex justify-center items-center min-h-[60vh] sm:my-0 mx-[1rem] mt-[5rem] text-[#000000] dark:text-[#ffffff]`}>
@@ -30,7 +35,10 @@ const ContributorProfile = (userProfile) => {
                 <div className='user-name'>
                   <h2 className='user-h2-tag text-[24px] textWhite'>{userProfile.data.name}</h2>
                   <div className='user-additional chatBoxIcon'>
-                    <a href={userProfile.data.html_url} target='__blank' className='user-login user-p-tag text-[18px] flex justify-center items-center gap-[2px]'>message <GoPaperAirplane className='user-browser ml-[7px]' /></a>
+                    {/* <a href={userProfile.data.html_url} target='__blank' className='user-login user-p-tag text-[18px] flex justify-center items-center gap-[2px]'>message <GoPaperAirplane className='user-browser ml-[7px]' /></a> */}
+                    <button onClick={handleSendMessage} className='user-login user-p-tag text-[18px] flex items-center gap-[2px]'>
+                      message <GoPaperAirplane className='user-browser ml-[7px]' />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -58,14 +66,17 @@ const ContributorProfile = (userProfile) => {
 
                     {/* Followers */}
                     <div className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group'>
-                        <div className='cell-icons bg-gradient-to-b from-[#9d62f3] to-[#644ad1] group-hover:bg-gradient-to-t text-[#ffffff] h-[40px] w-[40px] rounded-full flex justify-center items-center my-0 mx-[10px] '>
+                        <button onClick={handleFollow}> 
+                          <div className='cell-icons bg-gradient-to-b from-[#9d62f3] to-[#644ad1] group-hover:bg-gradient-to-t text-[#ffffff] h-[40px] w-[40px] rounded-full flex justify-center items-center my-0 mx-[10px] '>
                             <GoPersonAdd />
-                        </div>
+                          </div>
+                        </button>
                         <div className='user-cell-titles'>
                             <h3 className='text-[24px] textWhite'>{userProfile.data.followers}</h3>
                             <p className='user-p-tag text-[18px]'>Followers</p>
                         </div>
                     </div>
+                    
                 </div>
               </div>
             </div>
