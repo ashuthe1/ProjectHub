@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     },
     githubProfile: {
       type: String,
+      default: ""
     },
     followersData: {
       count: {
