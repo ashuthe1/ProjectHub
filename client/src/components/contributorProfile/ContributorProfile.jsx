@@ -10,64 +10,42 @@ import { toast } from "react-toastify";
 import { useUpdateUserMutation } from "../../features/user/userApiSlice";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
+import { DiGithubBadge } from "react-icons/di";
 import { GoOrganization, GoPeople, GoPaperAirplane, GoPersonAdd, GoRepo, GoLink, GoLocation, GoMail, GoBrowser, GoMention, GoMoon, GoSun, GoStar} from 'react-icons/go';
 import './ContributorProfile.css';
 
-const userProfile = {
-    "login": "ashuthe1",
-    "id": 86846633,
-    "avatar_url": "https://avatars.githubusercontent.com/u/86846633?v=4",
-    "url": "https://api.github.com/users/ashuthe1",
-    "html_url": "https://github.com/ashuthe1",
-    "followers_url": "https://api.github.com/users/ashuthe1/followers",
-    "following_url": "https://api.github.com/users/ashuthe1/following{/other_user}",
-    "gists_url": "https://api.github.com/users/ashuthe1/gists{/gist_id}",
-    "starred_url": "https://api.github.com/users/ashuthe1/starred{/owner}{/repo}",
-    "repos_url": "https://api.github.com/users/ashuthe1/repos",
-    "events_url": "https://api.github.com/users/ashuthe1/events{/privacy}",
-    "received_events_url": "https://api.github.com/users/ashuthe1/received_events",
-    "type": "User",
-    "name": "Ashutosh Gautam",
-    "blog": "ashutoshgautam.dev",
-    "location": "Bengaluru",
-    "email": null,
-    "bio": "Upcoming SWE Intern @Cisco🔸5🌟CodeChef🔸Expert @CodeForces 🔸Ex Backend Developer @Rablo🔸ICPC Regionalist'23🔸Problem Setter at iMochaWorks",
-    "public_repos": 74,
-    "followers": 30,
-    "following": 149
-  }
-const ContributorProfile = ({ user }) => {
-    useTitle("ProjectHub - Profile");
-
+const ContributorProfile = (userProfile) => {
+    useTitle("ProjectHub - Contributors");
+    // const {location, email, followers, following, public_repos, blog, avatar_url, type} = userProfile.data;
     return (
         <>
       <span className={`flex justify-center items-center min-h-[60vh] sm:my-0 mx-[1rem] mt-[5rem] text-[#000000] dark:text-[#ffffff]`}>
-        {userProfile && (
+        {userProfile.data && (
           <div className='card-section flex justify-center items-center gap-[20px]'>
             <div className='user-info-container relative bg-[#ffffff] dark:bg-slate-700 text-[#000000] dark:text-[#ffffff] border-[1px] border-[#d0d7de] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] p-[30px] max-w-[550px] flex flex-col justify-start items-start gap-[15px]'>
-              {/* <span className='user-type absolute top-[-38px] left-[-1px] bg-[#ffffff] dark:bg-slate-700 px-[15px] py-[5px] border-[1px] border-[#d0d7de] border-b-0 rounded-tl-[10px] rounded-tr-[10px] font-semibold text-[18px]'>{userProfile.type}</span> */}
+              {/* <span className='user-type absolute top-[-38px] left-[-1px] bg-[#ffffff] dark:bg-slate-700 px-[15px] py-[5px] border-[1px] border-[#d0d7de] border-b-0 rounded-tl-[10px] rounded-tr-[10px] font-semibold text-[18px]'>{userProfile.data.type}</span> */}
               <div className='user-info flex justify-start items-center gap-[15px]'>
-                <img className='w-[100px] h-[100px] rounded-full border-[5px] border-[#dddede] dark:border-slate-400' src={userProfile.avatar_url} alt="avatar profile" />
+                <img className='w-[100px] h-[100px] rounded-full border-[5px] border-[#dddede] dark:border-slate-400' src={userProfile.data.avatar_url} alt="avatar profile" />
                 <div className='user-name'>
-                  <h2 className='user-h2-tag text-[24px] textWhite'>{userProfile.name}</h2>
-                  <div className='user-additional'>
-                    <a href={userProfile.html_url} target='__blank' className='user-login user-p-tag text-[18px] flex justify-center items-center gap-[2px]'>Chat <GoPaperAirplane className='user-browser ml-[7px]' /></a>
+                  <h2 className='user-h2-tag text-[24px] textWhite'>{userProfile.data.name}</h2>
+                  <div className='user-additional chatBoxIcon'>
+                    <a href={userProfile.data.html_url} target='__blank' className='user-login user-p-tag text-[18px] flex justify-center items-center gap-[2px]'>message <GoPaperAirplane className='user-browser ml-[7px]' /></a>
                   </div>
                 </div>
               </div>
-              <p className='user-p-tag text-[18px]'>{userProfile.bio !== null ? (<p>{userProfile.bio}</p>) : 'Bio not mentioned'}</p>
+              <p className='user-p-tag text-[18px]'>{userProfile.data.bio !== null ? (<p>{userProfile.data.bio}</p>) : 'Bio not mentioned'}</p>
               <div className='user-additional-container flex flex-col gap-[5px]'>
                 <div className="user-additional flex justify-start items-center gap-[5px]">
-                  <GoLocation />
-                  <p>{userProfile.location !== null ? (<p>{userProfile.location}</p>) : 'Not Mentioned'}</p>
+                  <DiGithubBadge  className='githubLogo' />
+                  <p>{userProfile.data.location !== null ? (<p>{userProfile.data.location}</p>) : 'Not Mentioned'}</p>
                 </div>
-                <div className="user-additional flex justify-start items-center gap-[5px]">
+                {/* <div className="user-additional flex justify-start items-center gap-[5px]">
                   <GoLink />
-                  <p>{userProfile.blog !== '' ? (<a href={userProfile.blog} target='__blank'>{userProfile.blog.replace(/https?:\/\//, '')}</a>) : ('Not Mentioned')}</p>
-                </div>
+                  <p>{userProfile.data.blog !== '' ? (<a href={userProfile.data.blog} target='__blank'>{userProfile.data.blog.replace(/https?:\/\//, '')}</a>) : ('Not Mentioned')}</p>
+                </div> */}
                 <div className="user-additional flex justify-start items-center gap-[5px]">
                   <GoMail />
-                  <p>{userProfile.email !== null ? (<p>{userProfile.email}</p>) : ('Not Mentioned')}</p>
+                  <p>{userProfile.data.email !== null ? (<p>{userProfile.data.email}</p>) : ('Not Mentioned')}</p>
                 </div>
 
                 <div className="spaceBanao">
@@ -76,7 +54,7 @@ const ContributorProfile = ({ user }) => {
                             <GoRepo />
                         </div>
                         <div className='user-cell-titles'>
-                            <h3 className='text-[24px] textWhite'>{userProfile.public_repos}</h3>
+                            <h3 className='text-[24px] textWhite'>{userProfile.data.public_repos}</h3>
                             <p className='user-p-tag text-[18px]'>Projects</p>
                         </div>
                     </div>
@@ -87,7 +65,7 @@ const ContributorProfile = ({ user }) => {
                             <GoPersonAdd />
                         </div>
                         <div className='user-cell-titles'>
-                            <h3 className='text-[24px] textWhite'>{userProfile.followers}</h3>
+                            <h3 className='text-[24px] textWhite'>{userProfile.data.followers}</h3>
                             <p className='user-p-tag text-[18px]'>Followers</p>
                         </div>
                     </div>

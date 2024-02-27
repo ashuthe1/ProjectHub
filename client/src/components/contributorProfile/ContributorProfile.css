@@ -21,3 +21,13 @@
 .card-section {
     margin: 2rem;
 }
+
+.chatBoxIcon {
+    border: 2px solid blueviolet;
+}
+
+.githubLogo{
+    width: 1.5em;
+    height: 1.5em;
+    margin-left: 0;
+}
