@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getAllUsers,
+  followUser,
   updateUser,
   disableUser,
 } = require("../controllers/userController");
@@ -21,6 +22,9 @@ router
     ],
     updateUser
   );
+
+router.route("/follow/:id")
+  .patch(verifyJwt, followUser);
 
 router
   .route("/disable/:id")

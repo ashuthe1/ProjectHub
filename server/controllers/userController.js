@@ -13,6 +13,31 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+// follow a user by his ID
+const followUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user);
+    if (!user.followersData.users.includes(req.params.id)) {
+
+      user.followersData.users.push(req.params.id);
+      user.followersData.count++;
+      await user.save();
+      
+      res.status(200).json({
+        success: true,
+        message: "user has been followed"
+      });
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "you allready follow this user"
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 const updateUser = async (req, res, next) => {
   try {
     const { name, email, password, image } = req.body;
@@ -63,4 +88,4 @@ const disableUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUsers, updateUser, disableUser };
+module.exports = { getAllUsers, followUser, updateUser, disableUser };
