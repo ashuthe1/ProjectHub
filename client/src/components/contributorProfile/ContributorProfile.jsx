@@ -11,6 +11,7 @@ import { useUpdateUserMutation } from "../../features/user/userApiSlice";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
 import { DiGithubBadge } from "react-icons/di";
+import { FaLinkedin } from "react-icons/fa";
 import { GoOrganization, GoPeople, GoPaperAirplane, GoPersonAdd, GoRepo, GoLink, GoLocation, GoMail, GoBrowser, GoMention, GoMoon, GoSun, GoStar} from 'react-icons/go';
 import './ContributorProfile.css';
 
@@ -39,10 +40,6 @@ const ContributorProfile = (userProfile) => {
                   <DiGithubBadge  className='githubLogo' />
                   <p>{userProfile.data.location !== null ? (<p>{userProfile.data.location}</p>) : 'Not Mentioned'}</p>
                 </div>
-                {/* <div className="user-additional flex justify-start items-center gap-[5px]">
-                  <GoLink />
-                  <p>{userProfile.data.blog !== '' ? (<a href={userProfile.data.blog} target='__blank'>{userProfile.data.blog.replace(/https?:\/\//, '')}</a>) : ('Not Mentioned')}</p>
-                </div> */}
                 <div className="user-additional flex justify-start items-center gap-[5px]">
                   <GoMail />
                   <p>{userProfile.data.email !== null ? (<p>{userProfile.data.email}</p>) : ('Not Mentioned')}</p>

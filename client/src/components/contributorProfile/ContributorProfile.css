@@ -20,6 +20,11 @@
 }
 .card-section {
     margin: 2rem;
+    box-shadow: 10px 10px 39px -4px rgba(191,153,49,1);
+}
+
+.card-section:hover {
+    box-shadow: 10px 10px 39px 13px rgba(68,48,199,1);
 }
 
 .chatBoxIcon {
