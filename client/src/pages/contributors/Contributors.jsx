@@ -1,5 +1,6 @@
 import React from 'react';
 import {ContributorProfile} from "../../components";
+import './Contributors.css';
 
 const Data = {
     "users": [
@@ -26,7 +27,15 @@ const Data = {
         "about": "Backend Developer",
         "totalStars": 300,
         "skills": ["Node.js", "Express", "MongoDB"]
-        }
+        },
+        {
+          "id": 4,
+          "name": "John Smith",
+          "profilePicture": "https://filmfare.wwmindia.com/content/2024/feb/kiaraadvanidon311708765541.jpg",
+          "about": "Backend Developer",
+          "totalStars": 300,
+          "skills": ["Node.js", "Express", "MongoDB"]
+          }
     ]
 }
 const Contributors = () => {
