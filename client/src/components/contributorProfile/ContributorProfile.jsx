@@ -13,16 +13,23 @@ import useTitle from "../../hooks/useTitle";
 import { DiGithubBadge } from "react-icons/di";
 import { FaLinkedin } from "react-icons/fa";
 import { GoOrganization, GoPeople, GoPaperAirplane, GoPersonAdd, GoRepo, GoLink, GoLocation, GoMail, GoBrowser, GoMention, GoMoon, GoSun, GoStar} from 'react-icons/go';
+import {
+  useFollowUserMutation,
+} from "../../features/user/userApiSlice";
 import './ContributorProfile.css';
 
-async function handleFollow() {
-  console.log("Followed");
-}
-async function handleSendMessage() {
-  console.log("Message Sent");
-}
 const ContributorProfile = (userProfile) => {
     useTitle("ProjectHub - Contributors");
+    const [followUser] = useFollowUserMutation();
+
+    async function handleFollow() {
+      console.log("Inside follow function");
+      followUser(userProfile.data._id);
+      console.log("Followed");
+    }
+    async function handleSendMessage() {
+      console.log("Message Sent");
+    }
     return (
         <>
       <span className={`flex justify-center items-center min-h-[60vh] sm:my-0 mx-[1rem] mt-[5rem] text-[#000000] dark:text-[#ffffff]`}>

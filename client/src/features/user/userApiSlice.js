@@ -6,6 +6,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: () => "/user",
       providesTags: ["users"],
     }),
+    followUser: builder.mutation({
+      query: (userId) => ({
+        url: `/user/follow/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["users"],
+    }),
     updateUser: builder.mutation({
       query: (args) => {
         const { userId, ...userData } = args;
@@ -36,6 +43,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
+  useFollowUserMutation,
   useUpdateUserMutation,
   useDisableUserMutation,
   useSubscribeUserMutation,

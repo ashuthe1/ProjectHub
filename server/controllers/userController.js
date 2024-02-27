@@ -16,18 +16,27 @@ const getAllUsers = async (req, res, next) => {
 // follow a user by his ID
 const followUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user);
-    if (!user.followersData.users.includes(req.params.id)) {
+    console.log("Inside Follow user function");
+    console.log(req.params.id, req.user);
+    const user = await User.findById(req.params.id);
+    if(!user) return res.status(404).json({
+      success: false,
+      message: "User not found"
+    });
+    if (!user.followersData.users.includes(req.user)) {
 
-      user.followersData.users.push(req.params.id);
+      user.followersData.users.push(req.user);
       user.followersData.count++;
       await user.save();
-      
+
+      console.log("Scuccessfully followed")
+
       res.status(200).json({
         success: true,
         message: "user has been followed"
       });
     } else {
+      console.log("You allready follow this user")
       res.status(403).json({
         success: false,
         message: "you allready follow this user"
