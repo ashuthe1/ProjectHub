@@ -82,7 +82,7 @@ const ContributorProfile = ({ user }) => {
                 </div>
 
                 <div className="spaceBanao">
-                    <span className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group'>
+                    <div className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group firstBox'>
                         <div className='cell-icons bg-gradient-to-b from-[#9d62f3] to-[#644ad1] group-hover:bg-gradient-to-t text-[#ffffff] h-[40px] w-[40px] rounded-full flex justify-center items-center my-0 mx-[10px] '>
                             <GoRepo />
                         </div>
@@ -90,10 +90,10 @@ const ContributorProfile = ({ user }) => {
                             <h3 className='text-[24px] textWhite'>{userProfile.public_repos}</h3>
                             <p className='user-p-tag text-[18px]'>Projects</p>
                         </div>
-                    </span>
+                    </div>
 
                     {/* Followers */}
-                    <span className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group'>
+                    <div className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group secondBox'>
                         <div className='cell-icons bg-gradient-to-b from-[#9d62f3] to-[#644ad1] group-hover:bg-gradient-to-t text-[#ffffff] h-[40px] w-[40px] rounded-full flex justify-center items-center my-0 mx-[10px] '>
                             <GoPeople />
                         </div>
@@ -101,7 +101,7 @@ const ContributorProfile = ({ user }) => {
                             <h3 className='text-[24px] textWhite'>{userProfile.followers}</h3>
                             <p className='user-p-tag text-[18px]'>Followers</p>
                         </div>
-                    </span>
+                    </div>
                 </div>
               </div>
             </div>
