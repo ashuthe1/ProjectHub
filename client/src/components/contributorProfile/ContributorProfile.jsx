@@ -54,7 +54,7 @@ const ContributorProfile = ({ user }) => {
         <>
       <section className={`flex justify-center items-center min-h-[80vh] sm:my-0 mx-[1rem] mt-[5rem] text-[#000000] dark:text-[#ffffff]`}>
         {userProfile && (
-          <div div className='card-section flex justify-center items-center gap-[20px]'>
+          <div className='card-section flex justify-center items-center gap-[20px]'>
             <div className='user-info-container relative bg-[#ffffff] dark:bg-slate-700 text-[#000000] dark:text-[#ffffff] border-[1px] border-[#d0d7de] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] p-[30px] max-w-[550px] flex flex-col justify-start items-start gap-[15px]'>
               {/* <span className='user-type absolute top-[-38px] left-[-1px] bg-[#ffffff] dark:bg-slate-700 px-[15px] py-[5px] border-[1px] border-[#d0d7de] border-b-0 rounded-tl-[10px] rounded-tr-[10px] font-semibold text-[18px]'>{userProfile.type}</span> */}
               <div className='user-info flex justify-start items-center gap-[15px]'>
@@ -93,7 +93,7 @@ const ContributorProfile = ({ user }) => {
                     </div>
 
                     {/* Followers */}
-                    <div className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group secondBox'>
+                    <div className='user-cell flex justify-start items-center gap-[15px] bg-[#ffffff] dark:bg-slate-700 p-[10px] rounded-[10px] border-[1px] border-[d0d7de] w-[200px] text-[#000000] dark:text-[#ffffff] group'>
                         <div className='cell-icons bg-gradient-to-b from-[#9d62f3] to-[#644ad1] group-hover:bg-gradient-to-t text-[#ffffff] h-[40px] w-[40px] rounded-full flex justify-center items-center my-0 mx-[10px] '>
                             <GoPeople />
                         </div>
