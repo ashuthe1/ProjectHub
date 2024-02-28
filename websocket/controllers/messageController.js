@@ -1,37 +1,94 @@
-const asyncHandler = require('express-async-handler')
+const Conversation = require("../models/conversationModel");
 const Message = require("../models/messageModel");
-const Chat = require("../models/messageModel");
+const{ getRecipientSocketId, io } = require("../socket/socket");
 
-// Send New Message in a Chat (between 2 users, based on chatId)
-const newMessage = asyncHandler(async (req, res, next) => {
-  const { chatId, content } = req.body;
+async function sendMessage(req, res) {
+	try {
+		const { recipientId, message } = req.body;
+		const senderId = req.user;
 
-  const msgData = {
-    sender: req.user,
-    chatId,
-    content,
-  };
+		let conversation = await Conversation.findOne({
+			participants: { $all: [senderId, recipientId] },
+		});
 
-  const newMessage = await Message.create(msgData);
+		if (!conversation) {
+			conversation = new Conversation({
+				participants: [senderId, recipientId],
+				lastMessage: {
+					text: message,
+					sender: senderId,
+				},
+			});
+			await conversation.save();
+		}
 
-  await Chat.findByIdAndUpdate(chatId, { latestMessage: newMessage });
+		const newMessage = new Message({
+			conversationId: conversation._id,
+			sender: senderId,
+			text: message,
+		});
 
-  res.status(200).json({
-    success: true,
-    newMessage,
-  });
-});
+		await Promise.all([
+			newMessage.save(),
+			conversation.updateOne({
+				lastMessage: {
+					text: message,
+					sender: senderId,
+				},
+			}),
+		]);
 
-// Get All Messages (between 2 users, based on chatId)
-const getMessages = asyncHandler(async (req, res, next) => {
-  const messages = await Message.find({
-    chatId: req.params.chatId,
-  });
+		const recipientSocketId = getRecipientSocketId(recipientId);
+		if (recipientSocketId) {
+			io.to(recipientSocketId).emit("newMessage", newMessage);
+		}
 
-  res.status(200).json({
-    success: true,
-    messages,
-  });
-});
+		res.status(201).json(newMessage);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
 
-module.exports = { newMessage, getMessages };
+async function getMessages(req, res) {
+	const { otherUserId } = req.params;
+	const userId = req.user;
+	try {
+		const conversation = await Conversation.findOne({
+			participants: { $all: [userId, otherUserId] },
+		});
+
+		if (!conversation) {
+			return res.status(404).json({ error: "Conversation not found" });
+		}
+
+		const messages = await Message.find({
+			conversationId: conversation._id,
+		}).sort({ createdAt: 1 });
+
+		res.status(200).json(messages);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
+
+async function getConversations(req, res) {
+	const userId = req.user;
+	try {
+		const conversations = await Conversation.find({ participants: userId }).populate({
+			path: "participants",
+			select: "username profilePic",
+		});
+
+		// remove the current user from the participants array
+		conversations.forEach((conversation) => {
+			conversation.participants = conversation.participants.filter(
+				(participant) => participant._id.toString() !== userId.toString()
+			);
+		});
+		res.status(200).json(conversations);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
+
+module.exports = {sendMessage, getMessages, getConversations};

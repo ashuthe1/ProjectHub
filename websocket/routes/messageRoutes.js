@@ -1,13 +1,14 @@
 const express = require("express");
-const { newMessage, getMessages } = require("../controllers/messageController");
-
-const ROLES_LIST = require("../../server/config/rolesList");
-const verifyJwt = require("../../server/middleware/verifyJwt");
-const verifyRoles = require("../../server/middleware/verifyRoles");
-
 const router = express.Router();
 
-router.route("/newMessage").post(verifyJwt, newMessage);
-router.route("/messages/:chatId").get(verifyJwt, getMessages);
+const verifyJwt = require("../middlewares/verifyJwt");
+const { getMessages, sendMessage, getConversations } = require("../controllers/messageController");
+
+router.route("/conversations") 
+    .get(getConversations);
+router.route("/:otherUserId")
+    .get(verifyJwt, getMessages);
+router.route("/")
+    .post(verifyJwt, sendMessage);
 
 module.exports = router;
