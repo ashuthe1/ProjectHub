@@ -22,7 +22,7 @@ const ChatPage = () => {
 	const [loadingConversations, setLoadingConversations] = useState(true);
 	const [searchText, setSearchText] = useState("");
 	const [selectedConversation, setSelectedConversation] = useState();
-	const [conversations, setConversations] = useState([]);
+	const [conversations, setConversations] = useState([{}]);
 	const { socket, onlineUsers } = useSocket();
 
 	useEffect(() => {

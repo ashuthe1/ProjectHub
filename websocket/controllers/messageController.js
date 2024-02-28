@@ -1,6 +1,7 @@
 const Conversation = require("../models/conversationModel");
 const Message = require("../models/messageModel");
 const{ getRecipientSocketId, io } = require("../socket/socket");
+const User = require("../models/userModel");
 
 async function sendMessage(req, res) {
 	try {
@@ -74,12 +75,15 @@ async function getMessages(req, res) {
 async function getConversations(req, res) {
 	try {
 		const userId = req.user;
-		const conversations = await Conversation.find({ participants: userId });
+		const conversations = await Conversation.find({ participants: userId }).populate({
+			path: "participants",
+			select: "name profilePicture",
+		});
 
 		// remove the current user from the participants array
 		conversations.forEach((conversation) => {
 			conversation.participants = conversation.participants.filter(
-				(participant) => participant._id.toString() != userId.toString()
+				(participant) => participant._id.toString() !== userId.toString()
 			);
 		});
 		res.status(200).json(conversations);
