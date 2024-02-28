@@ -14,10 +14,11 @@ import {
 // import userAtom from "../atoms/userAtom";
 import { BsCheck2All, BsFillImageFill } from "react-icons/bs";
 // import { selectedConversationAtom } from "../atoms/messagesAtom";
+import useAuth from "../hooks/useAuth";
 
 const Conversation = ({ conversation, isOnline }) => {
 	const user = conversation.participants[0];
-	const currentUser = null;
+	const currentUser = useAuth();
 	const lastMessage = conversation.lastMessage;
 	const [selectedConversation, setSelectedConversation] = ""
 	const colorMode = useColorMode();
@@ -37,8 +38,8 @@ const Conversation = ({ conversation, isOnline }) => {
 				setSelectedConversation({
 					_id: conversation._id,
 					userId: user._id,
-					userProfilePic: user.profilePic,
-					username: user.username,
+					userProfilePicture: user.ProfilePicture,
+					name: user.name,
 					mock: conversation.mock,
 				})
 			}
@@ -65,7 +66,7 @@ const Conversation = ({ conversation, isOnline }) => {
 					{user.username} <Image src='/verified.png' w={4} h={4} ml={1} />
 				</Text>
 				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
-					{currentUser._id === lastMessage.sender ? (
+					{currentUser.userId === lastMessage.sender ? (
 						<Box color={lastMessage.seen ? "blue.400" : ""}>
 							<BsCheck2All size={16} />
 						</Box>
