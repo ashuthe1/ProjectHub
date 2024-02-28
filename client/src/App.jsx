@@ -14,6 +14,7 @@ import {
   MyBlogs,
   MyProjects,
   Contributors,
+  ChatPage,
   Profile,
   Project,
   SavedProjects,
@@ -140,6 +141,10 @@ function App() {
               <Route
                 path="contributors"
                 element={<Contributors />}
+              />
+              <Route
+                path="chats"
+                element={<ChatPage />}
               />
               <Route
                 path="contact"

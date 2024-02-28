@@ -5,7 +5,7 @@ const verifyJwt = require("../middlewares/verifyJwt");
 const { getMessages, sendMessage, getConversations } = require("../controllers/messageController");
 
 router.route("/conversations") 
-    .get(getConversations);
+    .get(verifyJwt, getConversations);
 router.route("/:otherUserId")
     .get(verifyJwt, getMessages);
 router.route("/")

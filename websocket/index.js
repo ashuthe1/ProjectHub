@@ -10,6 +10,8 @@ const { app, server } = require("./socket/socket");
 const PORT = process.env.PORT || 8081;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017/ProjectHub'
 
+app.use(cors(corsOptions));
+
 app.use(express.json({ limit: "50mb" }))
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

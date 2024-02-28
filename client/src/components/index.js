@@ -45,5 +45,5 @@ export {
   ScrollToTop,
   ShareButton,
   NoData,
-  ContributorProfile,
+  ContributorProfile
 };

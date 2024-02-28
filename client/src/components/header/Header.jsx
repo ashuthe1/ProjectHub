@@ -59,6 +59,14 @@ const Header = () => {
             </NavLink>
             </li>
             <li>
+            <NavLink
+                to={"/chats"}
+                className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
+              >
+                Chats
+            </NavLink>
+            </li>
+            <li>
               <NavLink
                 to={"/blog"}
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center font-semibold text-gray-600"
