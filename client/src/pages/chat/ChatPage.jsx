@@ -11,77 +11,71 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
 const baseUrl = import.meta.env.VITE_SOCKET_SERVER_BASE_URL;
 import Conversation from "../../components/Conversation";
+import useShowToast from "../../hooks/useShowToast";
 
 const ChatPage = () => {
-	// const currentUser = useAuth();
+	const showToast = useShowToast();
+
 	const accessToken = useSelector(selectCurrentToken);
-	const currentUser = accessToken;
+	const currentUser = useAuth();
 	const [searchingUser, setSearchingUser] = useState(false);
 	const [loadingConversations, setLoadingConversations] = useState(true);
 	const [searchText, setSearchText] = useState("");
-	const [selectedConversation, setSelectedConversation] = useState({});
+	const [selectedConversation, setSelectedConversation] = useState();
 	const [conversations, setConversations] = useState([]);
 	const { socket, onlineUsers } = useSocket();
-	// console.log("ChatPage", accessToken);
 
-	async function sendMessage() {
-		const data = {
-			recipientId: "65cb35f5329453f256d7617f",
-			message: "Message from Frontend 2!"
-		};
-
-		const config = {
-			method: 'post',
-			url: `${baseUrl}/messages`,
-			headers: { 
-				'Authorization': `Bearer ${accessToken}`,
-				'Content-Type': 'application/json'
-			},
-			data: data
-		};
-		
-		// Making the Axios POST request
-		axios(config).then(function (response) {
-			console.log(JSON.stringify(response.data));
-			return;
-		})
-		.catch(function (error) {
-			console.log(error);
-			return;
+	useEffect(() => {
+		socket?.on("messagesSeen", ({ conversationId }) => {
+			setConversations((prev) => {
+				const updatedConversations = prev.map((conversation) => {
+					if (conversation._id === conversationId) {
+						return {
+							...conversation,
+							lastMessage: {
+								...conversation.lastMessage,
+								seen: true,
+							},
+						};
+					}
+					return conversation;
+				});
+				return updatedConversations;
+			});
 		});
-	}
+	}, [socket, setConversations]);
 
-	async function handleGetConversations() {
-		const config = {
-			method: 'GET',
-			url: `${baseUrl}/messages/conversations`,
-			headers: { 
-				'Authorization': `Bearer ${accessToken}`,
-				'Content-Type': 'application/json'
-			},
+	useEffect(() => {
+		const getConversations = async () => {
+			try {
+				const res = await fetch("http://localhost:8081/api/v1/messages/conversations", {
+					headers: {
+						Authorization: `Bearer ${accessToken}` // Replace accessToken with your actual access token
+					}
+				});
+				const data = await res.json();
+				if (data.error) {
+					showToast("Error", data.error, "error");
+					return;
+				}
+				console.log(data);
+				setConversations(data);
+				console.log('Data: ', data);
+				console.log('Conversations: ', conversations);
+			} catch (error) {
+				showToast("Error", error.message, "error");
+			} finally {
+				setLoadingConversations(false);
+			}
 		};
 
-		axios(config).then(function (response) {
-			setConversations(response.data);
-			setLoadingConversations(false);
-			console.log('haha', response.data);
-			return;
-		})
-		.catch(function (error) {
-			console.log(error);
-			return;
-		});
-	}
-
-
-	async function handleConversationSearch() {
-		
-	}
+		getConversations();
+	}, [accessToken]);
 
 	return (
 		<>
 		<h1>Chat Page...</h1>
-		<button onClick={handleGetConversations}> Get Conversations </button>
+		<button> Get Conversations </button>
 		</>
 		// <Box
 		// 	position={"absolute"}
@@ -103,14 +97,6 @@ const ChatPage = () => {
 		// 			<Text fontWeight={700} color={useColorModeValue("gray.600", "gray.400")}>
 		// 				Your Conversations
 		// 			</Text>
-		// 			<form onSubmit={handleConversationSearch}>
-		// 				<Flex alignItems={"center"} gap={2}>
-		// 					<Input placeholder='Search for a user' onChange={(e) => setSearchText(e.target.value)} />
-		// 					<Button size={"sm"} onClick={handleConversationSearch} isLoading={searchingUser}>
-		// 						<SearchIcon />
-		// 					</Button>
-		// 				</Flex>
-		// 			</form>
 
 		// 			{loadingConversations &&
 		// 				[0, 1, 2, 3, 4].map((_, i) => (
