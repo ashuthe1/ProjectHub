@@ -22,6 +22,11 @@ import ShareButton from "./shareButton/ShareButton";
 import NoData from "./noData/NoData";
 import ContributorProfile from "./contributorProfile/ContributorProfile";
 
+import Conversation from "./Conversation";
+import MessageContainer from "./MessageContainer";
+import Message from "./Message";
+import MessageInput from "./MessageInput.jsx";
+
 export {
   Header,
   Menu,
@@ -45,5 +50,9 @@ export {
   ScrollToTop,
   ShareButton,
   NoData,
-  ContributorProfile
+  ContributorProfile,
+  Conversation,
+  MessageContainer,
+  Message,
+  MessageInput,
 };
