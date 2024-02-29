@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
-// import useGetconversation from "../../hooks/useGetconversations";
 import { useDispatch, useSelector } from "react-redux";
 import {selectCurrentToken} from "../../features/auth/authSlice";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -18,9 +17,7 @@ const ChatPage = () => {
 
 	const accessToken = useSelector(selectCurrentToken);
 	const currentUser = useAuth();
-	const [searchingUser, setSearchingUser] = useState(false);
 	const [loadingConversations, setLoadingConversations] = useState(true);
-	const [searchText, setSearchText] = useState("");
 	const [selectedConversation, setSelectedConversation] = useState();
 	const [conversations, setConversations] = useState([]);
 	const { socket, onlineUsers } = useSocket();

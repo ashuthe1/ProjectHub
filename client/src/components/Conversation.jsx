@@ -9,18 +9,16 @@ import {
 	WrapItem,
 	useColorMode,
 	useColorModeValue,
-} from "@chakra-ui/react";
-// import { useRecoilState, useRecoilValue } from "recoil";
-// import userAtom from "../atoms/userAtom";
+} from "@chakra-ui/react"
 import { BsCheck2All, BsFillImageFill } from "react-icons/bs";
-// import { selectedConversationAtom } from "../atoms/messagesAtom";
 import useAuth from "../hooks/useAuth";
+import { useEffect, useState } from "react";
 
 const Conversation = ({ conversation, isOnline }) => {
 	const user = conversation.participants[0];
 	const currentUser = useAuth();
 	const lastMessage = conversation.lastMessage;
-	const [selectedConversation, setSelectedConversation] = ""
+	const [selectedConversation, setSelectedConversation] = useState({});
 	const colorMode = useColorMode();
 
 	console.log("selectedConverstion", selectedConversation);
@@ -55,7 +53,7 @@ const Conversation = ({ conversation, isOnline }) => {
 						sm: "sm",
 						md: "md",
 					}}
-					src={user.profilePic}
+					src={user.profilePicture}
 				>
 					{isOnline ? <AvatarBadge boxSize='1em' bg='green.500' /> : ""}
 				</Avatar>
@@ -63,7 +61,7 @@ const Conversation = ({ conversation, isOnline }) => {
 
 			<Stack direction={"column"} fontSize={"sm"}>
 				<Text fontWeight='700' display={"flex"} alignItems={"center"}>
-					{user.username} <Image src='/verified.png' w={4} h={4} ml={1} />
+					{user.name} <Image src='/verified.png' w={4} h={4} ml={1} />
 				</Text>
 				<Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
 					{currentUser.userId === lastMessage.sender ? (
