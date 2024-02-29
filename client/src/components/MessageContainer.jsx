@@ -2,20 +2,22 @@ import { Avatar, Divider, Flex, Image, Skeleton, SkeletonCircle, Text, useColorM
 import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useEffect, useRef, useState } from "react";
-// import useShowToast from "../hooks/useShowToast";
-// import { conversationsAtom, selectedConversationAtom } from "../atoms/messagesAtom";
-// import { useRecoilValue, useSetRecoilState } from "recoil";
-// import userAtom from "../atoms/userAtom";
+import useShowToast from "../hooks/useShowToast";
+import { useDispatch, useSelector } from "react-redux";
+import {selectCurrentToken} from "../features/auth/authSlice";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
-const MessageContainer = () => {
-	// const showToast = useShowToast();
-	const selectedConversation = "";
+import useAuth from "../hooks/useAuth";
+
+const MessageContainer = ({selectedConversation}) => {
+	const showToast = useShowToast();
+	const accessToken = useSelector(selectCurrentToken);
+	// const selectedConversation = useState({});
 	const [loadingMessages, setLoadingMessages] = useState(true);
 	const [messages, setMessages] = useState([]);
-	const currentUser = "";
+	const currentUser = useAuth();
 	const { socket } = useSocket();
-	const setConversations = "";
+	const setConversations = useState([]);
 	const messageEndRef = useRef(null);
 
 	useEffect(() => {
@@ -51,7 +53,7 @@ const MessageContainer = () => {
 	}, [socket, selectedConversation, setConversations]);
 
 	useEffect(() => {
-		const lastMessageIsFromOtherUser = messages.length && messages[messages.length - 1].sender !== currentUser._id;
+		const lastMessageIsFromOtherUser = messages.length && messages[messages.length - 1].sender !== currentUser.userId;
 		if (lastMessageIsFromOtherUser) {
 			socket.emit("markMessagesAsSeen", {
 				conversationId: selectedConversation._id,
@@ -75,7 +77,7 @@ const MessageContainer = () => {
 				});
 			}
 		});
-	}, [socket, currentUser._id, messages, selectedConversation]);
+	}, [socket, currentUser.userId, messages, selectedConversation]);
 
 	useEffect(() => {
 		messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -87,23 +89,34 @@ const MessageContainer = () => {
 			setMessages([]);
 			try {
 				if (selectedConversation.mock) return;
-				const res = await fetch(`/api/messages/${selectedConversation.userId}`);
-				const data = await res.json();
+				// const res = await fetch(`/api/messages/${selectedConversation.userId}`);
+				console.log("User Id", selectedConversation.userId);
+				const res = await axios.get(
+					`http://localhost:8081/api/v1/messages/${selectedConversation.userId}`,
+					{
+					  headers: {
+						Authorization: `Bearer ${accessToken}`
+					  }
+					}
+				  );
+				  
+				const data = response.data;
 				if (data.error) {
-					// showToast("Error", data.error, "error");
+					// Handle error if needed
+					showToast("Error", data.error, "error");
 					return;
 				}
 				setMessages(data);
 			} catch (error) {
-				// showToast("Error", error.message, "error");
+				showToast("Error", error.message, "error");
 			} finally {
 				setLoadingMessages(false);
 			}
 		};
-
 		getMessages();
 	}, [selectedConversation.userId, selectedConversation.mock]);
 
+	console.log("Messages from selected conversation: ", messages);
 	return (
 		<Flex
 			flex='70'
@@ -150,7 +163,7 @@ const MessageContainer = () => {
 							direction={"column"}
 							ref={messages.length - 1 === messages.indexOf(message) ? messageEndRef : null}
 						>
-							<Message message={message} ownMessage={currentUser._id === message.sender} />
+							<Message message={message} ownMessage={currentUser.userId === message.sender} />
 						</Flex>
 					))}
 			</Flex>

@@ -11,6 +11,7 @@ import { useSocket } from "../../context/SocketContext";
 const baseUrl = import.meta.env.VITE_SOCKET_SERVER_BASE_URL;
 import Conversation from "../../components/Conversation";
 import useShowToast from "../../hooks/useShowToast";
+import MessageContainer from "../../components/MessageContainer";
 
 const ChatPage = () => {
 	const showToast = useShowToast();
@@ -18,7 +19,7 @@ const ChatPage = () => {
 	const accessToken = useSelector(selectCurrentToken);
 	const currentUser = useAuth();
 	const [loadingConversations, setLoadingConversations] = useState(true);
-	const [selectedConversation, setSelectedConversation] = useState();
+	const [selectedConversation, setSelectedConversation] = useState({});
 	const [conversations, setConversations] = useState([]);
 	const { socket, onlineUsers } = useSocket();
 
@@ -113,7 +114,7 @@ const ChatPage = () => {
 							/>
 						))}
 				</Flex>
-				{/* {!selectedConversation._id && (
+				{!selectedConversation._id && (
 					<Flex
 						flex={70}
 						borderRadius={"md"}
@@ -126,9 +127,11 @@ const ChatPage = () => {
 						<GiConversation size={100} />
 						<Text fontSize={20}>Select a conversation to start messaging</Text>
 					</Flex>
-				)} */}
+				)}
 
-				{/* {selectedConversation._id && <MessageContainer />} */}
+				{selectedConversation._id && <MessageContainer 
+					selectedConversation={selectedConversation} 
+				/>}
 			</Flex>
 		</Box>
 	);
