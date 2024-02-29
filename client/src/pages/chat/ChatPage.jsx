@@ -12,14 +12,16 @@ const baseUrl = import.meta.env.VITE_SOCKET_SERVER_BASE_URL;
 import Conversation from "../../components/Conversation";
 import useShowToast from "../../hooks/useShowToast";
 import MessageContainer from "../../components/MessageContainer";
+import { setConversationsdata, setMessagesdata, selectCurrentConversations } from "../../features/chat/chatSlice";
 
 const ChatPage = () => {
 	const showToast = useShowToast();
-
+	const dispatch = useDispatch();
 	const accessToken = useSelector(selectCurrentToken);
+	const selectedConversation = useSelector(selectCurrentConversations);
 	const currentUser = useAuth();
 	const [loadingConversations, setLoadingConversations] = useState(true);
-	const [selectedConversation, setSelectedConversation] = useState({});
+	// const [selectedConversation, setSelectedConversation] = useState({});
 	const [conversations, setConversations] = useState([]);
 	const { socket, onlineUsers } = useSocket();
 
@@ -57,6 +59,7 @@ const ChatPage = () => {
 					return;
 				}
 				console.log(data);
+				dispatch(setConversationsdata(data));
 				setConversations(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -114,7 +117,7 @@ const ChatPage = () => {
 							/>
 						))}
 				</Flex>
-				{!selectedConversation._id && (
+				{!selectedConversation?._id && (
 					<Flex
 						flex={70}
 						borderRadius={"md"}
@@ -129,7 +132,7 @@ const ChatPage = () => {
 					</Flex>
 				)}
 
-				{selectedConversation._id && <MessageContainer 
+				{selectedConversation?._id && <MessageContainer 
 					selectedConversation={selectedConversation} 
 				/>}
 			</Flex>

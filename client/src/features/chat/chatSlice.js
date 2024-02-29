@@ -7,16 +7,16 @@ const chatSlice = createSlice({
     messages: null,
   },
   reducers: {
-    setConversations: (state, action) => {
+    setConversationsdata: (state, action) => {
       state.conversations = action.payload;
     },
-    setMessages: (state, action) => {
+    setMessagesdata: (state, action) => {
       state.messages = action.payload;
     },
   },
 });
 
-export const { setConversations, setMessages } = chatSlice.actions;
+export const { setConversationsdata, setMessagesdata } = chatSlice.actions;
 export default chatSlice.reducer;
 
 export const selectCurrentConversations = (state) => state.chat.conversations;

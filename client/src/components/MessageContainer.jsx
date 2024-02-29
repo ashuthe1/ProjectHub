@@ -3,11 +3,13 @@ import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useEffect, useRef, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
-import { useDispatch, useSelector } from "react-redux";
 import {selectCurrentToken} from "../features/auth/authSlice";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
 import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
 
 const MessageContainer = ({selectedConversation}) => {
 	const showToast = useShowToast();
@@ -15,6 +17,7 @@ const MessageContainer = ({selectedConversation}) => {
 	// const selectedConversation = useState({});
 	const [loadingMessages, setLoadingMessages] = useState(true);
 	const [messages, setMessages] = useState([]);
+	const [changed, setChanged] = useState(false);
 	const currentUser = useAuth();
 	const { socket } = useSocket();
 	const setConversations = useState([]);
@@ -106,6 +109,7 @@ const MessageContainer = ({selectedConversation}) => {
 					showToast("Error", data.error, "error");
 					return;
 				}
+				// dispatch(setMessagesdata(data));
 				setMessages(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -116,6 +120,10 @@ const MessageContainer = ({selectedConversation}) => {
 		getMessages();
 	}, [selectedConversation.userId, selectedConversation.mock]);
 
+	if(changed){
+		useDispatch(setMessagesdata(messages));
+		setChanged(false);
+	}
 	console.log("Messages from selected conversation: ", messages);
 	return (
 		<Flex

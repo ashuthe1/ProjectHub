@@ -13,14 +13,34 @@ import {
 import { BsCheck2All, BsFillImageFill } from "react-icons/bs";
 import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
 
 const Conversation = ({ conversation, isOnline }) => {
 	const user = conversation.participants[0];
 	const currentUser = useAuth();
 	const lastMessage = conversation.lastMessage;
 	const [selectedConversation, setSelectedConversation] = useState({});
+	const [changed, setChanged] = useState(false);
 	const colorMode = useColorMode();
 
+	function handleSelectedConversation() {
+		const tempData = {
+			_id: conversation._id,
+			userId: user._id,
+			userProfilePicture: user.ProfilePicture,
+			name: user.name,
+			mock: conversation.mock,
+		};
+		console.log("Step 1")
+		setSelectedConversation(tempData);
+		setChanged(true);
+	};
+	if(changed){ 
+		console.log("Step 2")
+		useDispatch(setConversationsdata(selectedConversation)); 
+		setChanged(false);
+	}
 	console.log("selectedConverstion", selectedConversation);
 	return (
 		<Flex
@@ -32,15 +52,7 @@ const Conversation = ({ conversation, isOnline }) => {
 				bg: useColorModeValue("gray.600", "gray.dark"),
 				color: "white",
 			}}
-			onClick={() =>
-				setSelectedConversation({
-					_id: conversation._id,
-					userId: user._id,
-					userProfilePicture: user.ProfilePicture,
-					name: user.name,
-					mock: conversation.mock,
-				})
-			}
+			onClick={handleSelectedConversation}
 			bg={
 				selectedConversation?._id === conversation._id ? (colorMode === "light" ? "gray.400" : "gray.dark") : ""
 			}
