@@ -114,7 +114,7 @@ const ChatPage = () => {
 							</Flex>
 						))}
 
-					{!loadingConversations &&
+					{!loadingConversations && conversations &&
 						conversations.map((conversation) => (
 							// console.log(conversation._id)
 							<Conversation
