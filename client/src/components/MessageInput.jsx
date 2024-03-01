@@ -23,13 +23,13 @@ import { BsFillImageFill } from "react-icons/bs";
 import useAuth from "../hooks/useAuth";
 import {selectCurrentToken} from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setConversationsdata, setMessagesdata, selectCurrentConversations, selectCurrentMessages } from "../features/chat/chatSlice";
+import { setConversationsdata, setMessagesdata, selectConversations, selectCurrentMessages } from "../features/chat/chatSlice";
 
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
 	const showToast = useShowToast();
 	const accessToken = useSelector(selectCurrentToken);
-	const selectedConversation = useSelector(selectCurrentConversations);
+	const selectedConversation = useSelector(selectConversations);
 	const dispatch = useDispatch();
 	const imageRef = useRef(null);
 	const { onClose } = useDisclosure();

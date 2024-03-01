@@ -3,25 +3,32 @@ import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useEffect, useRef, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
-import {selectCurrentToken} from "../features/auth/authSlice";
 import { useSocket } from "../context/SocketContext.jsx";
 import messageSound from "../assets/sounds/message.mp3";
-import useAuth from "../hooks/useAuth";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
 
-const MessageContainer = ({selectedConversation}) => {
+import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import {selectCurrentToken} from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setConversationsdata, 
+	setSelectedConversationsdata, 
+	setMessagesdata,
+	selectConversations,
+	selectSelectedConversations,
+	selectCurrentMessages,
+ } 
+from "../features/chat/chatSlice";
+
+const MessageContainer = () => {
 	const showToast = useShowToast();
+
 	const accessToken = useSelector(selectCurrentToken);
-	// const selectedConversation = useState({});
+	const selectedConversation = useSelector(selectSelectedConversations);
 	const dispatch = useDispatch();
 	const [loadingMessages, setLoadingMessages] = useState(true);
 	const [messages, setMessages] = useState([]);
-	const [changed, setChanged] = useState(false);
 	const currentUser = useAuth();
 	const { socket } = useSocket();
-	const setConversations = useState([]);
 	const messageEndRef = useRef(null);
 
 	useEffect(() => {
@@ -36,7 +43,7 @@ const MessageContainer = ({selectedConversation}) => {
 				sound.play();
 			}
 
-			setConversations((prev) => {
+			dispatch(setConversationsdata((prev) => {
 				const updatedConversations = prev.map((conversation) => {
 					if (conversation._id === message.conversationId) {
 						return {
@@ -50,11 +57,11 @@ const MessageContainer = ({selectedConversation}) => {
 					return conversation;
 				});
 				return updatedConversations;
-			});
+			}));
 		});
 
 		return () => socket.off("newMessage");
-	}, [socket, selectedConversation, setConversations]);
+	}, [socket, selectedConversation, setConversationsdata]);
 
 	useEffect(() => {
 		const lastMessageIsFromOtherUser = messages.length && messages[messages.length - 1].sender !== currentUser.userId;
@@ -92,7 +99,7 @@ const MessageContainer = ({selectedConversation}) => {
 			setLoadingMessages(true);
 			setMessages([]);
 			try {
-				if (selectedConversation.mock) return;
+				// if (selectedConversation.mock) return;
 				// const res = await fetch(`/api/messages/${selectedConversation.userId}`);
 				console.log("User Id", selectedConversation.userId);
 				const res = await axios.get(
@@ -106,7 +113,6 @@ const MessageContainer = ({selectedConversation}) => {
 				  
 				const data = response.data;
 				if (data.error) {
-					// Handle error if needed
 					showToast("Error", data.error, "error");
 					return;
 				}
@@ -119,7 +125,8 @@ const MessageContainer = ({selectedConversation}) => {
 			}
 		};
 		getMessages();
-	}, [selectedConversation.userId, selectedConversation.mock]);
+		console.log("Selected Conversation debug: ", selectedConversation);
+	}, [selectedConversation, showToast, setMessagesdata, dispatch, accessToken]);
 
 	console.log("Messages from selected conversation: ", messages);
 	return (
@@ -172,7 +179,6 @@ const MessageContainer = ({selectedConversation}) => {
 						</Flex>
 					))}
 			</Flex>
-
 			<MessageInput setMessages={setMessages} />
 		</Flex>
 	);

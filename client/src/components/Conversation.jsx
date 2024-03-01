@@ -12,19 +12,56 @@ import {
 } from "@chakra-ui/react"
 import { BsCheck2All, BsFillImageFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import useShowToast from "../hooks/useShowToast";
+
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import {selectCurrentToken} from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
+import { setConversationsdata, 
+	setSelectedConversationsdata, 
+	setMessagesdata,
+	selectConversations,
+	selectSelectedConversations,
+	selectCurrentMessages,
+ } 
+from "../features/chat/chatSlice";
 
 const Conversation = ({ conversation, isOnline }) => {
 	const user = conversation.participants[0];
 	const dispatch = useDispatch();
 	const currentUser = useAuth();
+	const showToast = useShowToast();
+	const accessToken = useSelector(selectCurrentToken);
 	const lastMessage = conversation.lastMessage;
-	const [selectedConversation, setSelectedConversation] = useState({});
+	const selectedConversation = useSelector(selectSelectedConversations);
 	const [changed, setChanged] = useState(false);
 	const colorMode = useColorMode();
 
+	const getMessages = async () => {
+		try {
+			console.log("User Id", selectedConversation.userId);
+			const res = await axios.get(
+				`http://localhost:8081/api/v1/messages/${selectedConversation.userId}`,
+				{
+				  headers: {
+					Authorization: `Bearer ${accessToken}`
+				  }
+				}
+			  );
+			  
+			const data = response.data;
+			if (data.error) {
+				showToast("Error", data.error, "error");
+				return;
+			}
+			dispatch(setMessagesdata(data));
+		} catch (error) {
+			showToast("Error", error.message, "error");
+		} finally {
+			// do something
+		}
+	};
 	function handleSelectedConversation() {
 		const tempData = {
 			_id: conversation._id,
@@ -34,8 +71,8 @@ const Conversation = ({ conversation, isOnline }) => {
 			mock: conversation.mock,
 		};
 		console.log("Step 1")
-		setSelectedConversation(tempData);
-		dispatch(setConversationsdata(tempData));
+		dispatch(setSelectedConversationsdata(tempData));
+		getMessages();
 		setChanged(true);
 	};
 	console.log("selectedConverstion", selectedConversation);

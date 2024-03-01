@@ -12,13 +12,13 @@ const baseUrl = import.meta.env.VITE_SOCKET_SERVER_BASE_URL;
 import Conversation from "../../components/Conversation";
 import useShowToast from "../../hooks/useShowToast";
 import MessageContainer from "../../components/MessageContainer";
-import { setConversationsdata, setMessagesdata, selectCurrentConversations } from "../../features/chat/chatSlice";
+import { setConversationsdata, setMessagesdata, selectConversations } from "../../features/chat/chatSlice";
 
 const ChatPage = () => {
 	const showToast = useShowToast();
 	const dispatch = useDispatch();
 	const accessToken = useSelector(selectCurrentToken);
-	const selectedConversation = useSelector(selectCurrentConversations);
+	const selectedConversation = useSelector(selectConversations);
 	const currentUser = useAuth();
 	const [loadingConversations, setLoadingConversations] = useState(true);
 	// const [selectedConversation, setSelectedConversation] = useState({});
