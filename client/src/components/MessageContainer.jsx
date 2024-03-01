@@ -15,6 +15,7 @@ const MessageContainer = ({selectedConversation}) => {
 	const showToast = useShowToast();
 	const accessToken = useSelector(selectCurrentToken);
 	// const selectedConversation = useState({});
+	const dispatch = useDispatch();
 	const [loadingMessages, setLoadingMessages] = useState(true);
 	const [messages, setMessages] = useState([]);
 	const [changed, setChanged] = useState(false);
@@ -109,7 +110,7 @@ const MessageContainer = ({selectedConversation}) => {
 					showToast("Error", data.error, "error");
 					return;
 				}
-				// dispatch(setMessagesdata(data));
+				dispatch(setMessagesdata(data));
 				setMessages(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -120,10 +121,6 @@ const MessageContainer = ({selectedConversation}) => {
 		getMessages();
 	}, [selectedConversation.userId, selectedConversation.mock]);
 
-	if(changed){
-		useDispatch(setMessagesdata(messages));
-		setChanged(false);
-	}
 	console.log("Messages from selected conversation: ", messages);
 	return (
 		<Flex

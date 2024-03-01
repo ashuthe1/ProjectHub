@@ -11,13 +11,14 @@ import {
 	useColorModeValue,
 } from "@chakra-ui/react"
 import { BsCheck2All, BsFillImageFill } from "react-icons/bs";
-import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
 
 const Conversation = ({ conversation, isOnline }) => {
 	const user = conversation.participants[0];
+	const dispatch = useDispatch();
 	const currentUser = useAuth();
 	const lastMessage = conversation.lastMessage;
 	const [selectedConversation, setSelectedConversation] = useState({});
@@ -34,13 +35,14 @@ const Conversation = ({ conversation, isOnline }) => {
 		};
 		console.log("Step 1")
 		setSelectedConversation(tempData);
+		dispatch(setConversationsdata(tempData));
 		setChanged(true);
 	};
-	if(changed){ 
-		console.log("Step 2")
-		useDispatch(setConversationsdata(selectedConversation)); 
-		setChanged(false);
-	}
+	// if(changed){ 
+	// 	console.log("Step 2")
+	// 	useDispatch(setConversationsdata(selectedConversation)); 
+	// 	setChanged(false);
+	// }
 	console.log("selectedConverstion", selectedConversation);
 	return (
 		<Flex

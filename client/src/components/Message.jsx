@@ -4,6 +4,9 @@ import { Avatar, Box, Flex, Image, Skeleton, Text } from "@chakra-ui/react";
 // import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
 import { useState } from "react";
+import useAuth from "../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
 
 const Message = ({ ownMessage, message }) => {
 	const selectedConversation = "";
@@ -26,7 +29,7 @@ const Message = ({ ownMessage, message }) => {
 							</Box>
 						</Flex>
 					)}
-					{message.img && !imgLoaded && (
+					{/* {message.img && !imgLoaded && (
 						<Flex mt={5} w={"200px"}>
 							<Image
 								src={message.img}
@@ -37,9 +40,9 @@ const Message = ({ ownMessage, message }) => {
 							/>
 							<Skeleton w={"200px"} h={"200px"} />
 						</Flex>
-					)}
+					)} */}
 
-					{message.img && imgLoaded && (
+					{/* {message.img && imgLoaded && (
 						<Flex mt={5} w={"200px"}>
 							<Image src={message.img} alt='Message image' borderRadius={4} />
 							<Box
@@ -51,20 +54,22 @@ const Message = ({ ownMessage, message }) => {
 								<BsCheck2All size={16} />
 							</Box>
 						</Flex>
-					)}
+					)} */}
 
-					<Avatar src={user.profilePic} w='7' h={7} />
+					{/* Will uncomment after some time*/}
+					{/* <Avatar src={user.profilePicture} w='7' h={7} /> */}
 				</Flex>
 			) : (
 				<Flex gap={2}>
-					<Avatar src={selectedConversation.userProfilePic} w='7' h={7} />
+					{/* Will uncomment after some time*/}
+					{/* <Avatar src={selectedConversation.userProfilePicture} w='7' h={7} /> */}
 
 					{message.text && (
 						<Text maxW={"350px"} bg={"gray.400"} p={1} borderRadius={"md"} color={"black"}>
 							{message.text}
 						</Text>
 					)}
-					{message.img && !imgLoaded && (
+					{/* {message.img && !imgLoaded && (
 						<Flex mt={5} w={"200px"}>
 							<Image
 								src={message.img}
@@ -75,13 +80,13 @@ const Message = ({ ownMessage, message }) => {
 							/>
 							<Skeleton w={"200px"} h={"200px"} />
 						</Flex>
-					)}
+					)} */}
 
-					{message.img && imgLoaded && (
+					{/* {message.img && imgLoaded && (
 						<Flex mt={5} w={"200px"}>
 							<Image src={message.img} alt='Message image' borderRadius={4} />
 						</Flex>
-					)}
+					)} */}
 				</Flex>
 			)}
 		</>
