@@ -23,13 +23,19 @@ import { BsFillImageFill } from "react-icons/bs";
 import useAuth from "../hooks/useAuth";
 import {selectCurrentToken} from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setConversationsdata, setMessagesdata, selectConversations, selectCurrentMessages } from "../features/chat/chatSlice";
-
+import { setConversationsdata, 
+	setSelectedConversationsdata, 
+	setMessagesdata,
+	selectConversations,
+	selectSelectedConversations,
+	selectCurrentMessages,
+ } 
+from "../features/chat/chatSlice";
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
 	const showToast = useShowToast();
 	const accessToken = useSelector(selectCurrentToken);
-	const selectedConversation = useSelector(selectConversations);
+	const selectedConversation = useSelector(selectSelectedConversations);
 	const dispatch = useDispatch();
 	const imageRef = useRef(null);
 	const { onClose } = useDisclosure();
@@ -44,6 +50,8 @@ const MessageInput = ({ setMessages }) => {
 		setIsSending(true);
 
 		try {
+			console.log("Selected Converstion ka doosra part", selectedConversation.userId);
+			console.log("Message Text", messageText);
 			const res = await fetch("http://localhost:8081/api/v1/messages", {
 				method: "POST",
 				headers: {
@@ -61,10 +69,9 @@ const MessageInput = ({ setMessages }) => {
 				return;
 			}
 			console.log(data);
-			// setMessages((messages) => [...messages, data]);
-			setMessagesdata((messages) => [...messages, data])
+			setMessages((messages) => [...messages, data]);
 
-			setConversations((prevConvs) => {
+			dispatch(setConversationsdata((prevConvs) => {
 				const updatedConversations = prevConvs.map((conversation) => {
 					if (conversation._id === selectedConversation._id) {
 						return {
@@ -78,7 +85,7 @@ const MessageInput = ({ setMessages }) => {
 					return conversation;
 				});
 				return updatedConversations;
-			});
+			}));
 			setMessageText("");
 		} catch (error) {
 			showToast("Error", error.message, "error");

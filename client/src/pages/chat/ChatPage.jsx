@@ -12,22 +12,29 @@ const baseUrl = import.meta.env.VITE_SOCKET_SERVER_BASE_URL;
 import Conversation from "../../components/Conversation";
 import useShowToast from "../../hooks/useShowToast";
 import MessageContainer from "../../components/MessageContainer";
-import { setConversationsdata, setMessagesdata, selectConversations } from "../../features/chat/chatSlice";
+import { setConversationsdata, 
+	setSelectedConversationsdata, 
+	setMessagesdata,
+	selectConversations,
+	selectSelectedConversations,
+	selectCurrentMessages,
+ }  from "../../features/chat/chatSlice";
 
 const ChatPage = () => {
 	const showToast = useShowToast();
 	const dispatch = useDispatch();
 	const accessToken = useSelector(selectCurrentToken);
-	const selectedConversation = useSelector(selectConversations);
+	const selectedConversation = useSelector(selectSelectedConversations);
+	const conversations = useSelector(selectConversations);
 	const currentUser = useAuth();
 	const [loadingConversations, setLoadingConversations] = useState(true);
 	// const [selectedConversation, setSelectedConversation] = useState({});
-	const [conversations, setConversations] = useState([]);
+	// const [conversations, setConversations] = useState([]);
 	const { socket, onlineUsers } = useSocket();
 
 	useEffect(() => {
 		socket?.on("messagesSeen", ({ conversationId }) => {
-			setConversations((prev) => {
+			dispatch(setConversationsdata((prev) => {
 				const updatedConversations = prev.map((conversation) => {
 					if (conversation._id === conversationId) {
 						return {
@@ -41,9 +48,9 @@ const ChatPage = () => {
 					return conversation;
 				});
 				return updatedConversations;
-			});
+			}));
 		});
-	}, [socket, setConversations]);
+	}, [socket, setConversationsdata]);
 
 	useEffect(() => {
 		const getConversations = async () => {
@@ -60,7 +67,6 @@ const ChatPage = () => {
 				}
 				console.log(data);
 				dispatch(setConversationsdata(data));
-				setConversations(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
@@ -69,7 +75,7 @@ const ChatPage = () => {
 		};
 
 		getConversations();
-	}, [showToast, setConversations]);
+	}, [showToast, setConversationsdata]);
 
 	console.log('Conversations: ', conversations);
 
@@ -110,9 +116,10 @@ const ChatPage = () => {
 
 					{!loadingConversations &&
 						conversations.map((conversation) => (
+							// console.log(conversation._id)
 							<Conversation
 								key={conversation._id}
-								isOnline={onlineUsers.includes(conversation.participants[0]._id)}
+								isOnline={true}
 								conversation={conversation}
 							/>
 						))}
@@ -132,9 +139,7 @@ const ChatPage = () => {
 					</Flex>
 				)}
 
-				{selectedConversation?._id && <MessageContainer 
-					selectedConversation={selectedConversation} 
-				/>}
+				{selectedConversation?._id && <MessageContainer />}
 			</Flex>
 		</Box>
 	);

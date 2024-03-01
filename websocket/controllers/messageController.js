@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 
 async function sendMessage(req, res) {
 	try {
+		console.log(req.body)
 		const { recipientId, message } = req.body;
 		const senderId = req.user;
 

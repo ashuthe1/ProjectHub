@@ -28,7 +28,9 @@ import { setConversationsdata,
 from "../features/chat/chatSlice";
 
 const Conversation = ({ conversation, isOnline }) => {
+	console.log("Conversation ke andar", conversation);
 	const user = conversation.participants[0];
+	console.log("User", user);
 	const dispatch = useDispatch();
 	const currentUser = useAuth();
 	const showToast = useShowToast();
@@ -77,6 +79,7 @@ const Conversation = ({ conversation, isOnline }) => {
 	};
 	console.log("selectedConverstion", selectedConversation);
 	return (
+		// <>ok</>
 		<Flex
 			gap={4}
 			alignItems={"center"}

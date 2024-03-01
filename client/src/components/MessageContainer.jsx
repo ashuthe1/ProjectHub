@@ -99,7 +99,7 @@ const MessageContainer = () => {
 			setLoadingMessages(true);
 			setMessages([]);
 			try {
-				// if (selectedConversation.mock) return;
+				if (selectedConversation.mock) return;
 				// const res = await fetch(`/api/messages/${selectedConversation.userId}`);
 				console.log("User Id", selectedConversation.userId);
 				const res = await axios.get(
@@ -126,7 +126,7 @@ const MessageContainer = () => {
 		};
 		getMessages();
 		console.log("Selected Conversation debug: ", selectedConversation);
-	}, [selectedConversation, showToast, setMessagesdata, dispatch, accessToken]);
+	}, [showToast, selectedConversation.userId, selectedConversation.mock]);
 
 	console.log("Messages from selected conversation: ", messages);
 	return (
