@@ -61,7 +61,8 @@ const MessageInput = ({ setMessages }) => {
 				return;
 			}
 			console.log(data);
-			setMessages((messages) => [...messages, data]);
+			// setMessages((messages) => [...messages, data]);
+			setMessagesdata((messages) => [...messages, data])
 
 			setConversations((prevConvs) => {
 				const updatedConversations = prevConvs.map((conversation) => {

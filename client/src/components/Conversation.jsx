@@ -38,11 +38,6 @@ const Conversation = ({ conversation, isOnline }) => {
 		dispatch(setConversationsdata(tempData));
 		setChanged(true);
 	};
-	// if(changed){ 
-	// 	console.log("Step 2")
-	// 	useDispatch(setConversationsdata(selectedConversation)); 
-	// 	setChanged(false);
-	// }
 	console.log("selectedConverstion", selectedConversation);
 	return (
 		<Flex
@@ -61,16 +56,16 @@ const Conversation = ({ conversation, isOnline }) => {
 			borderRadius={"md"}
 		>
 			<WrapItem>
-				<Avatar
+				{/* <Avatar
 					size={{
 						base: "xs",
 						sm: "sm",
 						md: "md",
 					}}
-					src={user.profilePicture}
+					// src={user.profilePicture}
 				>
 					{isOnline ? <AvatarBadge boxSize='1em' bg='green.500' /> : ""}
-				</Avatar>
+				</Avatar> */}
 			</WrapItem>
 
 			<Stack direction={"column"} fontSize={"sm"}>

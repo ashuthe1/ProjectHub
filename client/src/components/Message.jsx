@@ -1,16 +1,15 @@
 import { Avatar, Box, Flex, Image, Skeleton, Text } from "@chakra-ui/react";
-// import { selectedConversationAtom } from "../atoms/messagesAtom";
-// import { useRecoilValue } from "recoil";
-// import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
+import {selectCurrentToken} from "../features/auth/authSlice";
 import { setConversationsdata, setMessagesdata } from "../features/chat/chatSlice";
 
 const Message = ({ ownMessage, message }) => {
 	const selectedConversation = "";
-	const user = null;
+	const user = useAuth();
+	const accessToken = useSelector(selectCurrentToken);
 	const [imgLoaded, setImgLoaded] = useState(false);
 	return (
 		<>
