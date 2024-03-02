@@ -31,6 +31,7 @@ import { setConversationsdata,
 	selectCurrentMessages,
  } 
 from "../features/chat/chatSlice";
+import { useSocket } from "../context/SocketContext.jsx";
 
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
@@ -40,6 +41,7 @@ const MessageInput = ({ setMessages }) => {
 	const dispatch = useDispatch();
 	const imageRef = useRef(null);
 	const { onClose } = useDisclosure();
+	const { socket } = useSocket();
 	// const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 	const [isSending, setIsSending] = useState(false);
 	var conversations = useSelector(selectConversations);
