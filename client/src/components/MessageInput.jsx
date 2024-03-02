@@ -31,6 +31,7 @@ import { setConversationsdata,
 	selectCurrentMessages,
  } 
 from "../features/chat/chatSlice";
+
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
 	const showToast = useShowToast();
@@ -70,22 +71,37 @@ const MessageInput = ({ setMessages }) => {
 			}
 			console.log(data);
 			setMessages((messages) => [...messages, data]);
-
-			dispatch(setConversationsdata((prevConvs) => {
-				const updatedConversations = prevConvs.map((conversation) => {
-					if (conversation._id === selectedConversation._id) {
-						return {
-							...conversation,
-							lastMessage: {
-								text: messageText,
-								sender: data.sender,
-							},
-						};
-					}
-					return conversation;
-				});
-				return updatedConversations;
-			}));
+			
+			var conversations = useSelector(selectConversations);
+			const updatedConversations = conversations.map((conversation) => {
+				if (conversation._id === selectedConversation._id) {
+					return {
+						...conversation,
+						lastMessage: {
+							text: messageText,
+							sender: data.sender,
+						},
+					};
+				}
+				return conversation;
+			});
+			const newUpdatedConversations = updatedConversations;
+			dispatch(setConversationsdata(newUpdatedConversations));
+			// dispatch(setConversationsdata((prevConvs) => {
+			// 	const updatedConversations = prevConvs.map((conversation) => {
+			// 		if (conversation._id === selectedConversation._id) {
+			// 			return {
+			// 				...conversation,
+			// 				lastMessage: {
+			// 					text: messageText,
+			// 					sender: data.sender,
+			// 				},
+			// 			};
+			// 		}
+			// 		return conversation;
+			// 	});
+			// 	return updatedConversations;
+			// }));
 			setMessageText("");
 		} catch (error) {
 			showToast("Error", error.message, "error");
