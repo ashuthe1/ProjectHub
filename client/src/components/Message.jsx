@@ -17,7 +17,7 @@ const Message = ({ ownMessage, message }) => {
 				<Flex gap={2} alignSelf={"flex-end"}>
 					{message.text && (
 						<Flex bg={"green.800"} maxW={"350px"} p={1} borderRadius={"md"}>
-							<Text color={"white"}>{message.text}</Text>
+							<Text color={"black"}>{message.text}</Text>
 							<Box
 								alignSelf={"flex-end"}
 								ml={1}

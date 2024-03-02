@@ -42,7 +42,7 @@ const MessageInput = ({ setMessages }) => {
 	const { onClose } = useDisclosure();
 	// const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 	const [isSending, setIsSending] = useState(false);
-
+	var conversations = useSelector(selectConversations);
 	const handleSendMessage = async (e) => {
 		e.preventDefault();
 		if (!messageText) return;
@@ -72,7 +72,8 @@ const MessageInput = ({ setMessages }) => {
 			console.log(data);
 			setMessages((messages) => [...messages, data]);
 			
-			var conversations = useSelector(selectConversations);
+			console.log("Just uske uper")
+			console.log("just uske uper 2")
 			const updatedConversations = conversations.map((conversation) => {
 				if (conversation._id === selectedConversation._id) {
 					return {
@@ -85,24 +86,13 @@ const MessageInput = ({ setMessages }) => {
 				}
 				return conversation;
 			});
+			console.log("Just uske neeche")
 			const newUpdatedConversations = updatedConversations;
 			dispatch(setConversationsdata(newUpdatedConversations));
-			// dispatch(setConversationsdata((prevConvs) => {
-			// 	const updatedConversations = prevConvs.map((conversation) => {
-			// 		if (conversation._id === selectedConversation._id) {
-			// 			return {
-			// 				...conversation,
-			// 				lastMessage: {
-			// 					text: messageText,
-			// 					sender: data.sender,
-			// 				},
-			// 			};
-			// 		}
-			// 		return conversation;
-			// 	});
-			// 	return updatedConversations;
-			// }));
+			console.log("After dispathing")
+			console.log("New Message", messageText);
 			setMessageText("");
+			console.log("After New Message", messageText);
 		} catch (error) {
 			showToast("Error", error.message, "error");
 		} finally {

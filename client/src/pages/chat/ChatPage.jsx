@@ -34,7 +34,8 @@ const ChatPage = () => {
 
 	useEffect(() => {
 		socket?.on("messagesSeen", ({ conversationId }) => {
-			dispatch(setConversationsdata((prev) => {
+			var prev = useSelector(selectConversations);
+			// dispatch(setConversationsdata((prev) => {
 				const updatedConversations = prev.map((conversation) => {
 					if (conversation._id === conversationId) {
 						return {
@@ -47,8 +48,8 @@ const ChatPage = () => {
 					}
 					return conversation;
 				});
-				return updatedConversations;
-			}));
+			prev = updatedConversations;
+			dispatch(setConversationsdata(prev));
 		});
 	}, [socket, setConversationsdata]);
 
