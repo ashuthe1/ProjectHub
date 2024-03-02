@@ -71,7 +71,13 @@ const MessageInput = ({ setMessages }) => {
 			}
 			console.log(data);
 			setMessages((messages) => [...messages, data]);
+			var newMessagesData = useSelector(selectCurrentMessages);
+			newMessagesData = [...newMessagesData, data];
+			dispatch(setMessagesdata(newMessagesData));
 			
+			socket.emit("newMessage", {
+				data,
+			});
 			console.log("Just uske uper")
 			console.log("just uske uper 2")
 			const updatedConversations = conversations.map((conversation) => {
