@@ -53,7 +53,6 @@ const MessageInput = ({ setMessages }) => {
 		setIsSending(true);
 
 		try {
-			console.log("Selected Converstion ka doosra part", selectedConversation.userId);
 			console.log("Message Text", messageText);
 			const res = await fetch("http://localhost:8081/api/v1/messages", {
 				method: "POST",
@@ -71,17 +70,11 @@ const MessageInput = ({ setMessages }) => {
 				showToast("Error", data.error, "error");
 				return;
 			}
-			console.log(data);
 			setMessages((messages) => [...messages, data]);
 			var newMessagesData = useSelector(selectCurrentMessages);
 			newMessagesData = [...newMessagesData, data];
 			dispatch(setMessagesdata(newMessagesData));
 			
-			socket.emit("newMessage", {
-				data,
-			});
-			console.log("Just uske uper")
-			console.log("just uske uper 2")
 			const updatedConversations = conversations.map((conversation) => {
 				if (conversation._id === selectedConversation._id) {
 					return {
@@ -94,12 +87,17 @@ const MessageInput = ({ setMessages }) => {
 				}
 				return conversation;
 			});
+			setMessageText("");
+			console.log("Messageee", messageText);
 			console.log("Just uske neeche")
+			socket.emit("newMessage", {
+				data,
+			});
 			const newUpdatedConversations = updatedConversations;
 			dispatch(setConversationsdata(newUpdatedConversations));
 			console.log("After dispathing")
 			console.log("New Message", messageText);
-			setMessageText("");
+			// setMessageText("");
 			console.log("After New Message", messageText);
 		} catch (error) {
 			showToast("Error", error.message, "error");
