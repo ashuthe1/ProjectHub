@@ -30,7 +30,7 @@ const ContributorProfile = (userProfile) => {
     async function handleSendMessage() {
       console.log("Message Sent");
     }
-    console.log(userProfile.data);
+    // console.log(userProfile.data);
     return (
         <>
       <span className={`flex justify-center items-center min-h-[60vh] sm:my-0 mx-[1rem] mt-[5rem] text-[#000000] dark:text-[#ffffff]`}>
