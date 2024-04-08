@@ -1,7 +1,7 @@
 const {MailtrapClient} = require("mailtrap")
 
 const TOKEN = process.env.MAILTRAP_TOKEN;
-const SENDER_EMAIL = 'ProjectHub@ashutoshgautam.dev';
+const SENDER_EMAIL = 'ProjectHub@gautamashutosh.com';
 
 async function notifyAdmin(RECIPIENT_EMAIL, OTP) {
     const client = new MailtrapClient({ token: TOKEN });
