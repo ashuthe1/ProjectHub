@@ -14,4 +14,5 @@ async function notifyAdmin(RECIPIENT_EMAIL, OTP) {
     })
 }
 
+
 module.exports = notifyAdmin;
