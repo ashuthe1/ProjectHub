@@ -8,8 +8,20 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
-
 import "./Auth.css";
+
+import googleButton from '../../assets/google/google.webp';
+
+
+function navigatToDifferentDomain(url){
+  window.location.href = url;
+}
+async function auth(){
+  const response = await fetch('http://127.0.0.1:8080/api/v1/auth/generateGoogleAuthUrl',{method:'post'});
+  const data = await response.json();
+  navigatToDifferentDomain(data.url);
+}
+
 const SignIn = () => {
   const [formDetails, setFormDetails] = useState({
     email: "",
@@ -67,6 +79,12 @@ const SignIn = () => {
           </p>
         </div>
         {/* Sign in form */}
+
+        <button className="googleBtn"  type="button" onClick={auth}>
+            {/* <AiFillGoogleCircle/> */}
+            <img className="googleBtnImg" src={googleButton} alt='Google SignUp'/>
+        </button>
+
         <form
           className="flex flex-col gap-4"
           onSubmit={handleSubmit}

@@ -3,6 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateOtp = require("../utils/generateOtp");
 const sendEmail = require("../utils/sendEmail");
+const dotenv = require('dotenv');
+dotenv.config(); // Load environment variables from .env file
+
+const {OAuth2Client} = require('google-auth-library');
 
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -27,6 +31,77 @@ const register = async (req, res, next) => {
     next(error);
   }
 };
+
+const generateGoogleAuthUrl = async (req, res, next) => {
+  try {
+    res.header("Access-Control-Allow-Origin", 'http://localhost:5173');
+    res.header("Access-Control-Allow-Credentials", 'true');
+    res.header("Referrer-Policy", "no-referrer-when-downgrade");
+    const redirectURL = 'http://localhost:8080/api/v1/auth/googleOAuth';
+
+    const oAuth2Client = new OAuth2Client(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      redirectURL
+    );
+
+    // Define the scopes you need
+    const scopes = [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/business.manage'
+    ];
+
+    // Generate the url that will be used for the consent dialog.
+    const authorizeUrl = oAuth2Client.generateAuthUrl({
+      access_type: 'offline',
+      scope: scopes.join(' '), // Join the scopes with a space
+      prompt: 'consent'
+    });
+
+    return res.json({ url: authorizeUrl });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+async function getUserData(access_token) {
+
+  const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
+  
+  //console.log('response',response);
+  const data = await response.json();
+  console.log('data',data);
+}
+
+
+
+async function googleOAuth(req, res, next) {
+
+    const code = req.query.code;
+
+    console.log(code);
+    try {
+        const redirectURL = "http://localhost:8080/api/v1/auth/googleOAuth";
+        const oAuth2Client = new OAuth2Client(
+            process.env.CLIENT_ID,
+            process.env.CLIENT_SECRET,
+            redirectURL
+          );
+        const r =  await oAuth2Client.getToken(code);
+        console.log('RRRR: ',r);
+        await oAuth2Client.setCredentials(r.tokens);
+        console.info('Tokens acquired.');
+        const user = oAuth2Client.credentials;
+        console.log('credentials',user);
+        await getUserData(oAuth2Client.credentials.access_token);
+      } catch (err) {
+        console.log('Error logging in with OAuth2 user', err);
+      }
+    res.redirect(303, 'http://localhost:5173/');
+}
 
 const login = async (req, res, next) => {
   try {
@@ -256,4 +331,4 @@ const logout = async (req, res) => {
   res.sendStatus(204);
 };
 
-module.exports = { register, login, sendOtp, verifyOtp1, forgotPassword, refreshToken, logout};
+module.exports = { register, generateGoogleAuthUrl, googleOAuth, login, sendOtp, verifyOtp1, forgotPassword, refreshToken, logout};

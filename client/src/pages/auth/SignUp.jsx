@@ -2,11 +2,22 @@ import React, { useState } from "react";
 import { Button, Input, Logo } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser, AiFillGoogleCircle } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "../../features/auth/authApiSlice";
 import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
+import googleButton from '../../assets/google/google.webp';
+
+
+function navigatToDifferentDomain(url){
+  window.location.href = url;
+}
+async function auth(){
+  const response = await fetch('http://127.0.0.1:8080/api/v1/auth/generateGoogleAuthUrl',{method:'post'});
+  const data = await response.json();
+  navigatToDifferentDomain(data.url);
+}
 
 const SignUp = () => {
   const [formDetails, setFormDetails] = useState({
@@ -63,6 +74,10 @@ const SignUp = () => {
           </p>
         </div>
         {/* Sign up form */}
+        <button className="googleBtn"  type="button" onClick={auth}>
+            {/* <AiFillGoogleCircle/> */}
+            <img className="googleBtnImg" src={googleButton} alt='Google SignUp'/>
+        </button>
         <form
           className="flex flex-col gap-4"
           onSubmit={handleSubmit}
