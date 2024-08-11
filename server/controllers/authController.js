@@ -34,10 +34,10 @@ const register = async (req, res, next) => {
 
 const generateGoogleAuthUrl = async (req, res, next) => {
   try {
-    res.header("Access-Control-Allow-Origin", 'http://localhost:5173');
+    res.header("Access-Control-Allow-Origin", 'https://projecthub.gautamashutosh.com');
     res.header("Access-Control-Allow-Credentials", 'true');
     res.header("Referrer-Policy", "no-referrer-when-downgrade");
-    const redirectURL = 'http://localhost:8080/api/v1/auth/googleOAuth';
+    const redirectURL = 'https://projecthubbackend.gautamashutosh.com/api/v1/auth/googleOAuth';
 
     const oAuth2Client = new OAuth2Client(
       process.env.CLIENT_ID,

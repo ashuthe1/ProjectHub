@@ -3,7 +3,7 @@ import { Button, Input, Logo } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignInMutation } from "../../features/auth/authApiSlice";
+import { useGoogleAuthUrlMutation, useSignInMutation } from "../../features/auth/authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
@@ -20,13 +20,6 @@ async function auth(){
   const response = await fetch('https://projecthubbackend.gautamashutosh.com/api/v1/auth/generateGoogleAuthUrl',{method:'post'});
   const data = await response.json();
   navigatToDifferentDomain(data.url);
-}
-// Function to get a specific cookie by name
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return "";
 }
 
 const SignIn = () => {
