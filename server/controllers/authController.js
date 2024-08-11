@@ -76,7 +76,7 @@ async function googleOAuth(req, res, next) {
   const code = req.query.code;
 
   try {
-    const redirectURL = "http://localhost:8080/api/v1/auth/googleOAuth";
+    const redirectURL = "https://projecthubbackend.gautamashutosh.com/api/v1/auth/googleOAuth";
     const oAuth2Client = new OAuth2Client(
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET,
@@ -146,7 +146,7 @@ async function googleOAuth(req, res, next) {
     });
 
     // Redirect to the frontend with the access token as a query parameter
-    res.redirect(303, `http://localhost:5173?accessToken=${accessToken}`);
+    res.redirect(303, `https://projecthub.gautamashutosh.com?accessToken=${accessToken}`);
 
   } catch (err) {
     console.log("Error logging in with OAuth2 user", err);

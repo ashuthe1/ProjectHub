@@ -17,7 +17,7 @@ function navigatToDifferentDomain(url){
   window.location.href = url;
 }
 async function auth(){
-  const response = await fetch('http://127.0.0.1:8080/api/v1/auth/generateGoogleAuthUrl',{method:'post'});
+  const response = await fetch('https://projecthubbackend.gautamashutosh.com/api/v1/auth/generateGoogleAuthUrl',{method:'post'});
   const data = await response.json();
   navigatToDifferentDomain(data.url);
 }
