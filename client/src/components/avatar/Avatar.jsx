@@ -42,8 +42,14 @@ const Avatar = () => {
     setAnchorEl(null);
     logout();
     localStorage.setItem("persist", false);
+    
+    // Delete the JWT cookie
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  
+    // Redirect the user to the sign-in page
     navigate("/auth/signin");
   };
+  
 
   return (
     <div className="ml-auto md:ml-0">
