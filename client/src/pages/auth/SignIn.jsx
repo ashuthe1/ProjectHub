@@ -39,21 +39,6 @@ const SignIn = () => {
   const navigate = useNavigate();
   useTitle("ProjectHub - Sign In");
 
-  useEffect(() => {
-    console.log('useEffect');
-    console.log('All Cookies:', document.cookie);
-
-    // const accessToken = getCookie('accessToken');
-    // console.log('Access Token:', accessToken);
-    // if (accessToken) {
-    //   // Dispatch the setCredentials action with the accessToken
-    //   dispatch(setCredentials({ accessToken }));
-    //   console.log('Access Token:', accessToken);
-    //   // Navigate to the main page
-    //   navigate("/");
-    // }
-  }, [dispatch, navigate]);
-
   const handleChange = (e) => {
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });
   };

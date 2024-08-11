@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import useTitle from "../../hooks/useTitle";
 import googleButton from '../../assets/google/google.webp';
 import { GoogleLogin } from '@react-oauth/google';
+import './Auth.css';
 
 function navigatToDifferentDomain(url){
   window.location.href = url;
@@ -73,7 +74,6 @@ const SignUp = () => {
             </Link>
           </p>
         </div>
-        Sign up form
         <button className="googleBtn"  type="button" onClick={auth}>
             <img className="googleBtnImg" src={googleButton} alt='Google SignUp'/>
         </button>
