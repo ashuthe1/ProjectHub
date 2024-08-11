@@ -45,7 +45,6 @@ const generateGoogleAuthUrl = async (req, res, next) => {
       redirectURL
     );
 
-    // Define the scopes you need
     const scopes = [
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/business.manage'
@@ -54,7 +53,7 @@ const generateGoogleAuthUrl = async (req, res, next) => {
     // Generate the url that will be used for the consent dialog.
     const authorizeUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',
-      scope: scopes.join(' '), // Join the scopes with a space
+      scope: scopes.join(' '),
       prompt: 'consent'
     });
 
@@ -68,39 +67,91 @@ const generateGoogleAuthUrl = async (req, res, next) => {
 
 
 async function getUserData(access_token) {
-
   const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
-  
-  //console.log('response',response);
   const data = await response.json();
-  console.log('data',data);
+  return data;
 }
 
-
-
 async function googleOAuth(req, res, next) {
+  const code = req.query.code;
 
-    const code = req.query.code;
+  try {
+    const redirectURL = "http://localhost:8080/api/v1/auth/googleOAuth";
+    const oAuth2Client = new OAuth2Client(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      redirectURL
+    );
+    
+    const r = await oAuth2Client.getToken(code);
+    await oAuth2Client.setCredentials(r.tokens);
+    const data = await getUserData(oAuth2Client.credentials.access_token);
 
-    console.log(code);
-    try {
-        const redirectURL = "http://localhost:8080/api/v1/auth/googleOAuth";
-        const oAuth2Client = new OAuth2Client(
-            process.env.CLIENT_ID,
-            process.env.CLIENT_SECRET,
-            redirectURL
-          );
-        const r =  await oAuth2Client.getToken(code);
-        console.log('RRRR: ',r);
-        await oAuth2Client.setCredentials(r.tokens);
-        console.info('Tokens acquired.');
-        const user = oAuth2Client.credentials;
-        console.log('credentials',user);
-        await getUserData(oAuth2Client.credentials.access_token);
-      } catch (err) {
-        console.log('Error logging in with OAuth2 user', err);
-      }
-    res.redirect(303, 'http://localhost:5173/');
+    const email = data.email;
+    const profilePic = data.picture;
+    const name = email.split("@")[0];
+
+    let foundUser = await User.findOne({ email });
+    
+    if (!foundUser) {
+      const newUser = new User({
+        name: name,
+        email: email,
+        profilePicture: profilePic,
+        password: "Cool@123",
+      });
+
+      foundUser = await newUser.save();
+    }
+
+    const accessToken = jwt.sign(
+      {
+        UserInfo: {
+          userId: foundUser._id.toString(),
+          name: foundUser.name,
+          email: foundUser.email,
+          profilePicture: foundUser.profilePicture,
+          roles: foundUser.roles,
+          favorites: foundUser.favorites,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "30m" }
+    );
+
+    const refreshToken = jwt.sign(
+      {
+        userId: foundUser._id,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "2d" }
+    );
+
+    foundUser.refreshToken = refreshToken;
+    await foundUser.save();
+
+    // Set cookies
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+    });
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 30 * 60 * 1000, // 30 minutes
+    });
+
+    // Redirect to the frontend with the access token as a query parameter
+    res.redirect(303, `http://localhost:5173?accessToken=${accessToken}`);
+
+  } catch (err) {
+    console.log("Error logging in with OAuth2 user", err);
+    res.status(500).send("An error occurred during authentication");
+  }
 }
 
 const login = async (req, res, next) => {

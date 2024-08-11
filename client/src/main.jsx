@@ -5,6 +5,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
 import { AnimatePresence } from "framer-motion";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 
 disableReactDevTools();

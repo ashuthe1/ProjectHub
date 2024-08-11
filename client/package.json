@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
     "@mui/x-data-grid": "^6.11.0",
+    "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@remix-run/react": "^2.11.1",
     "axios": "^1.4.0",

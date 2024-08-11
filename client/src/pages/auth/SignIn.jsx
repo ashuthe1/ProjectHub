@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Input, Logo } from "../../components";
 import { IoMailOutline } from "react-icons/io5";
 import { BiLockAlt } from "react-icons/bi";
@@ -21,6 +21,13 @@ async function auth(){
   const data = await response.json();
   navigatToDifferentDomain(data.url);
 }
+// Function to get a specific cookie by name
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return "";
+}
 
 const SignIn = () => {
   const [formDetails, setFormDetails] = useState({
@@ -31,6 +38,21 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useTitle("ProjectHub - Sign In");
+
+  useEffect(() => {
+    console.log('useEffect');
+    console.log('All Cookies:', document.cookie);
+
+    // const accessToken = getCookie('accessToken');
+    // console.log('Access Token:', accessToken);
+    // if (accessToken) {
+    //   // Dispatch the setCredentials action with the accessToken
+    //   dispatch(setCredentials({ accessToken }));
+    //   console.log('Access Token:', accessToken);
+    //   // Navigate to the main page
+    //   navigate("/");
+    // }
+  }, [dispatch, navigate]);
 
   const handleChange = (e) => {
     setFormDetails({ ...formDetails, [e.target.id]: e.target.value });

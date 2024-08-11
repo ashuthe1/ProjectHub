@@ -3,7 +3,6 @@ import { Hero, HomeCategories, Subscribe } from "../../components";
 import { useGetProjectsQuery, useGetFeaturedProjectsQuery } from "../../features/project/projectApiSlice";
 import { useGetBlogsQuery } from "../../features/blog/blogApiSlice";
 import useAuth from "../../hooks/useAuth";
-
 const Home = () => {
   const user = useAuth();
   const projects = useGetFeaturedProjectsQuery();
