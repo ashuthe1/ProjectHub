@@ -47,7 +47,6 @@ const generateGoogleAuthUrl = async (req, res, next) => {
 
     const scopes = [
       'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/business.manage'
     ];
 
     // Generate the url that will be used for the consent dialog.
