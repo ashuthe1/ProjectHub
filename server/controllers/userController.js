@@ -1,12 +1,19 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const redisClient = require("../config/redisClient");
+const generateRedisKey = require("../utils/generateRedisKey");
+const CACHE_TTL = 60 * 60;
 
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find()
       .select(["-password", "-refreshToken", "-favorites", "-otp"]) // Excluding the otp field
       .sort({ "followersData.count": -1 }); // Sorting by followersData.count in descending order
+
+    const key = generateRedisKey(req.originalUrl);
+    await redisClient.set(key, JSON.stringify(users));
+    await redisClient.expire(key, CACHE_TTL);
     res.status(200).json(users);
   } catch (error) {
     next(error);

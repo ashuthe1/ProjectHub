@@ -8,10 +8,11 @@ const {
 const ROLES_LIST = require("../config/rolesList");
 const verifyJwt = require("../middleware/verifyJwt");
 const verifyRoles = require("../middleware/verifyRoles");
+const isCached = require("../middleware/isCached");
 
 const router = express.Router();
 
-router.route("/").get(getAllUsers);
+router.route("/").get(isCached, getAllUsers);
 
 router
   .route("/:id")
