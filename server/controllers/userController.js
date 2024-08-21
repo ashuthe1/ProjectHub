@@ -5,13 +5,14 @@ const jwt = require("jsonwebtoken");
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find()
-      .find({ _id: { $ne: req.user } })
-      .select(["-password", "-refreshToken", "-favorites"]);
+      .select(["-password", "-refreshToken", "-favorites", "-otp"]) // Excluding the otp field
+      .sort({ "followersData.count": -1 }); // Sorting by followersData.count in descending order
     res.status(200).json(users);
   } catch (error) {
     next(error);
   }
 };
+
 
 // follow a user by his ID
 const followUser = async (req, res, next) => {
